@@ -44,7 +44,7 @@ class Start:
 
         # Entry box ... (row 3)
         # Entry Frame
-        self.entry_error_frame = Frame(self.start_frame, width=200, bg=background_colour)
+        self.entry_error_frame = Frame(self.start_frame, bg=background_colour)
         self.entry_error_frame.grid(row=3)
 
         # Entry box
@@ -71,28 +71,32 @@ class Start:
         # Easy button
         self.easy_button = Button(self.button_frame, text="Easy",
                                        command=lambda: self.to_game(1),
-                                  font=button_font, bg=easy_bg)
-        self.easy_button.grid(row=0, column=0, padx=25, pady=10)
+                                  font=button_font, bg=easy_bg, width=7)
+        self.easy_button.grid(row=0, column=0, padx=25, pady=15)
+        self.easy_button.config(state=DISABLED)
 
         # Hard button
         self.hard_button = Button(self.button_frame, text="Hard",
                                   command=lambda: self.to_game(2),
-                                  font=button_font, bg=hard_bg)
-        self.hard_button.grid(row=0, column=1, padx=25, pady=10)
+                                  font=button_font, bg=hard_bg, width=7)
+        self.hard_button.grid(row=0, column=1, padx=25, pady=15)
+        self.hard_button.config(state=DISABLED)
 
         # Help Button
         self.help_button = Button(self.start_frame, text="Help/Rules",
-                                  bg="#badaaa", font=button_font)
+                                  bg="#badaaa", font=button_font, width=25)
         self.help_button.grid(row=5, pady=10)
 
-        # Disable all difficulty buttons until the user has confirmed the amount of questions
-        self.easy_button.config(state=DISABLED)
-        self.hard_button.config(state=DISABLED)
+
 
     # integer checker
     # reused from mystery box and edited to suit animal question
     def int_check(self):
         starting_balance = self.question_entry.get()
+
+        # Disable all difficulty buttons until the user has confirmed the amount of questions
+        self.easy_button.config(state=DISABLED)
+        self.hard_button.config(state=DISABLED)
 
         # Set error background colours and assume that there are no
         # errors at the start...
