@@ -130,6 +130,16 @@ class Start:
             # set starting balance to amount entered by user
             self.starting_questions.set(starting_balance)
 
+    def to_game(self, stakes):
+
+        # retrieve starting balance
+        starting_balance = self.starting_funds.get()
+
+        Game(self, stakes, starting_balance)
+
+        # hide start up window
+        root.withdraw()
+
 
 
 # main routine
