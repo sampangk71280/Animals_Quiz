@@ -133,11 +133,23 @@ class Start:
     def help(self):
         print("You asked for help")
         get_help = Help(self)
-        get_help.help_text.configure(text="",
+        get_help.help_text.configure(text="This animal quiz will test your knowledge "
+                                          "on baby terms for different animals. "
+                                          "There are up to 20 questions you may "
+                                          "choose to answer, with all the animals "
+                                          "chosen at random. \n\n"
+                                          "In Hard mode, there is an option to receive "
+                                          "a hint for each question or to skip. "
+                                          "In Easy mode there are no hints or skip available. \n\n"
+                                          "When you are finished, you can view your Game Statistics "
+                                          "which can be saved and exported into a text file.",
                                      padx=10)
-
+# copied from mystery boxes
 class Help:
     def __init__(self, partner):
+
+        background_colour = "#b8daaa" # light green back ground colour
+
         # disable help button
         partner.help_button.config(state=DISABLED)
 
@@ -148,21 +160,21 @@ class Help:
         self.help_box.protocol('WM_DELETE_WINDOW', partial(self.close_help, partner))
 
         # Set up GUI Frame
-        self.help_frame = Frame(self.help_box)
+        self.help_frame = Frame(self.help_box, bg=background_colour)
         self.help_frame.grid()
 
         # Set up Help heading (row 0)
         self.how_heading = Label(self.help_frame, text="Help / Rules",
-                                 font="arial 10 bold")
+                                 font="arial 10 bold", bg=background_colour)
         self.how_heading.grid(row=0)
 
         # Help text (label, row 1)
         self.help_text = Label(self.help_frame, text="",
-                               justify=LEFT, width=40, wrap=250)
+                               justify=LEFT, width=40, wrap=250, bg=background_colour)
         self.help_text.grid(column=0, row=1)
 
         # Dismiss button (row 2)
-        self.dismiss_btn = Button(self.help_frame, text="Dismiss", width=10, bg="#C20000",
+        self.dismiss_btn = Button(self.help_frame, text="Dismiss", width=10, bg="#f29f9f",
                                   font="arial 10 bold",
                                   command=partial(self.close_help, partner))
         self.dismiss_btn.grid(row=2, pady=10)
