@@ -1,4 +1,4 @@
-# Start GUI (component 1) for Animals Quiz
+# Help GUI (component 2) for Animals Quiz
 
 from tkinter import *
 from functools import partial # to prevent unwanted windows
@@ -84,9 +84,9 @@ class Start:
 
         # Help Button
         self.help_button = Button(self.start_frame, text="Help/Rules",
-                                  bg="#badaaa", font=button_font, width=25)
+                                  bg="#badaaa", font=button_font, width=25,
+                                  command=self.help)
         self.help_button.grid(row=5, pady=10)
-
 
 
     # integer checker
@@ -133,23 +133,7 @@ class Start:
     def help(self):
         print("You asked for help")
         get_help = Help(self)
-        get_help.help_text.configure(text="Choose an amount to play with and then choose "
-                                          "the stakes. Higher stakes cost more per round "
-                                          "but you can win more as well. \n\n"
-                                          "When you enter the play area, you will see "
-                                          "three mystery boxes. To reveal the "
-                                          "contents of the boxes, click the 'Open Boxes' "
-                                          "button. If you don't have enough money to play, "
-                                          "the button will turn red and you need to quit "
-                                          "the game. \n\n"
-                                          "The contents of the boxes will be added to your "
-                                          "Balance. The boxes could contain\n\n"
-                                          "Low: Lead ($0) | Copper ($1) | Silver ($2) | Gold ($10)\n"
-                                          "Medium: Lead ($0) | Copper ($2) | Silver ($4) | Gold ($25)\n"
-                                          "High: Lead ($0) | Copper ($5) | Silver ($10) | Gold ($50)\n\n"
-                                          "If each box contains gold, you earn $30 (lowstakes). If "
-                                          "they contained copper, silver, and gold, you would receive "
-                                          "$13 ($1 - $2 - $10) and so on.",
+        get_help.help_text.configure(text="",
                                      padx=10)
 
 class Help:
