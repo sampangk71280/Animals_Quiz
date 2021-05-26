@@ -131,7 +131,6 @@ class Start:
             self.starting_questions.set(starting_balance)
 
     def help(self):
-        print("You asked for help")
         get_help = Help(self)
         get_help.help_text.configure(text="This animal quiz will test your knowledge "
                                           "on baby terms for different animals. "
