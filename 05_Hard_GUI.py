@@ -16,7 +16,7 @@ class Hard:
         stats_bg ="#fbac47" # orange
 
         # text
-        question_num = "1" # for testing purpose, change in the future
+        question_num = 1 # for testing purpose, change in the future
         ask = "What is the baby term for a cow?"
 
         # GUI To get starting balance and stakes
@@ -48,12 +48,12 @@ class Hard:
         self.button_frame.grid(row=3)
 
         # Skip Button
-        self.skip_button = Button(self.button_frame, font="Arian 12 bold",
+        self.skip_button = Button(self.button_frame, font="Arial 12 bold",
                                   text="Skip", bg=skip_bg)  # ,command=self. , font=, width)
         self.skip_button.grid(row=0, column=0, padx=5, pady=10)
 
         # Next Button
-        self.next_button = Button(self.button_frame, font="Arian 12 bold",
+        self.next_button = Button(self.button_frame, font="Arial 12 bold",
                                   text="Next", bg=next_bg)  # , command=self., font=, width)
         self.next_button.grid(row=0, column=1, padx=5, pady=10)
 
@@ -63,46 +63,9 @@ class Hard:
                                     ) #,command=self.help)
         self.stats_button.grid(row=4, pady=10)
 
-"""
-    # integer checker
-    # reused from mystery box and edited to suit animal question
-    def int_check(self):
-        starting_balance = self.question_entry.get()
 
-        # Disable all difficulty buttons until the user has confirmed the amount of questions
-        self.easy_button.config(state=DISABLED)
-        self.hard_button.config(state=DISABLED)
 
-        # Set error background colours and assume that there are no
-        # errors at the start...
-        error_back = "e2d6ff" # same as background_colour
-        has_errors = "yes"
 
-        try:
-            starting_balance = int(starting_balance)
-
-            # less than 0 questions, breaks
-            if starting_balance <= 0:
-                error_feedback = "Sorry you must enter a number higher than 0!"
-            # more than 20 questions, breaks
-            elif starting_balance > 20:
-                error_feedback = "Too high! The maximum questions " \
-                                 "you can answer is 20"
-            # 1-20 questions, works
-            else:
-                self.easy_button.config(state=NORMAL)
-                self.hard_button.config(state=NORMAL)
-                error_feedback = "" # removes previous error message
-
-        except ValueError:
-            error_feedback = "Please enter an integer (no text / decimals)"
-
-        if has_errors == "yes":
-            self.question_error_label.config(text=error_feedback) # shows error message
-        else:
-            # set question to amount entered by user
-            self.starting_questions.set(starting_balance)
-"""
 
 
 # main routine
