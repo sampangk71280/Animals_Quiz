@@ -15,8 +15,8 @@ class Hard:
         skip_bg= "#f29f9f" # light red
         stats_bg ="#fbac47" # orange
 
+        # question number
         question_num = 1
-
 
         # GUI To get starting balance and stakes
         self.hard_frame = Frame(padx=10, pady=10, bg=background_colour)
@@ -27,7 +27,7 @@ class Hard:
                                        font="Arial 19 bold", justify=LEFT, bg=background_colour)
         self.question_num_label.grid(row=0)
 
-        # question (row 1)
+        # Question (row 1)
         self.ask_question = Label(self.hard_frame, text="Question:",
                                          wrap=350, justify=LEFT, padx=10, pady=10, bg=background_colour)
         self.ask_question.grid(row=1)
@@ -43,7 +43,7 @@ class Hard:
 
         # Answer Confirm button
         self.confirm_button = Button(self.entry_frame, font="Arial 12 bold",
-                                     text="OK", bg=next_bg, command=self.check_answer)
+                                     text="OK", bg=next_bg) #, command=self.check_answer)
         self.confirm_button.grid(row=0, column=1)
 
         # Button frame (row 3)
@@ -57,11 +57,11 @@ class Hard:
 
         # Next Button
         self.next_button = Button(self.button_frame, font="Arial 12 bold",
-                                  text="Next", bg=next_bg)#, command=self.generate_ques()) #, font=, width)
+                                  text="Next", bg=next_bg, command=self.generate_ques()) #, font=, width)
         self.next_button.grid(row=0, column=1, padx=5, pady=10)
 
         # Feedback (row 4)
-        self.feedback = Label(self.hard_frame, bg=background_colour, text=user_feedback)
+        self.feedback = Label(self.hard_frame, bg=background_colour)#, text=user_feedback)
         self.feedback.grid(row=4, column=0)
 
         # Quiz Statistics Button (row 5)
@@ -70,7 +70,25 @@ class Hard:
                                     ) #,command=self.help)
         self.stats_button.grid(row=5, pady=10)
 
-    def check_answer(self):
+    def generate_ques(self):
+        results = []
+        with open('animals_quiz(final).csv') as file:
+            # make csv file into a list
+            reader = csv=.reader(file)
+            next(reader)
+            for row in reader:
+                results.append(row)
+
+        question_list = random.choice(results)  # randomly chooses a row
+        print(question_list)
+
+        question = question_list[0]  # adult animal term
+        answer = question_list[1]  # baby animal term
+
+        # asks questions
+        self.ask = input("What is the baby term for {}?".format(question)).lower()
+
+    """def check_answer(self):
         praise_list = ["Good job!", "Well done!", "Amazing!", "You did well!"]
 
         answer = self.answer_entry.get()
@@ -85,31 +103,13 @@ class Hard:
             user_feedback = ("Please don't leave it blank!")
         else:
             user_feedback = ("Incorrect!")
-        question_num += 1
-        #return user_feedback
+        # question_num += 1
+        """
 
-"""   def generate_ques(self):
-        grade = 0
 
-        results = []
-        with open('animals_quiz(final).csv') as file:
 
-            # make csv file into a list
-            reader = csv.reader(file)
-            next(reader)
-            for row in reader:
-                results.append(row)
 
-        question_list = random.choice(results)  # randomly chooses a row
-        print(question_list)
 
-        question = question_list[0]  # adult animal term
-        answer = question_list[1]  # baby animal term
-
-        # asks questions
-        self.ask = input("What is the baby term for {}?".format(question)).lower()
-
-"""
 
 
 
