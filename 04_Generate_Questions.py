@@ -29,9 +29,8 @@ if ask == answer:
 elif ask == "":
     print("Please don't leave it blank!")
 else:
-    print("Incorrect")
+    print("Incorrect!")
 
-print("grade", grade)
 
 
 
