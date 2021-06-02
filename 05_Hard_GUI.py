@@ -3,6 +3,7 @@
 from tkinter import *
 from functools import partial # to prevent unwanted windows
 import random
+import csv
 
 
 class Hard:
@@ -74,19 +75,19 @@ class Hard:
         results = []
         with open('animals_quiz(final).csv') as file:
             # make csv file into a list
-            reader = csv=.reader(file)
+            reader = csv.reader(file)
             next(reader)
             for row in reader:
                 results.append(row)
 
         question_list = random.choice(results)  # randomly chooses a row
-        print(question_list)
+        #print(question_list)
 
         question = question_list[0]  # adult animal term
         answer = question_list[1]  # baby animal term
 
         # asks questions
-        self.ask = input("What is the baby term for {}?".format(question)).lower()
+        self.ask = ("What is the baby term for {}?".format(question)).lower()
 
     """def check_answer(self):
         praise_list = ["Good job!", "Well done!", "Amazing!", "You did well!"]
