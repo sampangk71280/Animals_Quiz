@@ -6,7 +6,6 @@ grade = 0
 praise_list = ["Good job!", "Well done!", "Amazing!", "You did well!"]
 results = []
 with open('animals_quiz(final).csv') as file:
-
     # make csv file into a list
     reader = csv.reader(file)
     next(reader)

@@ -63,6 +63,7 @@ class Hard:
         # Next Button
         self.next_button = Button(self.button_frame, font="Arial 12 bold",
                                   text="Next", bg=next_bg, command=self.generate_ques())
+        self.next_button.config(state=DISABLED) # user can only go to the next question if they have answered
         self.next_button.grid(row=0, column=1, padx=5, pady=10)
 
 
@@ -73,11 +74,11 @@ class Hard:
         self.stats_button.grid(row=5, pady=10)
 
     def generate_ques(self):
-        results = []
+        results = [] # contains the adult and baby term
         with open('animals_quiz(final).csv') as file:
             # make csv file into a list
             reader = csv.reader(file)
-            next(reader)
+            next(reader) # skips the heading in csv
             for row in reader:
                 results.append(row)
 
@@ -90,33 +91,40 @@ class Hard:
         # asks questions
         self.ask = ("What is the baby term for {}?".format(question))
         self.ask_question.config(text=self.ask)
+        print(self.ask_question)
 
         # adds one to the question number
         self.question_num += 1
         self.question_num_label.config(text="Question {}/20".format(self.question_num))
 
     def check_answer(self):
-        # randomly picks a praise for the user
+        # different praises
         praise_list = ["Good job!", "Well done!", "Amazing!", "You did well!"]
 
-        print(self.ask,self.answer, self.answer_entry) # testing purposes
+        # takes the answer
+        self.user_answer = self.answer_entry.get()
 
         # if answer is correct
-        if self.answer_entry == self.answer:
+        if self.user_answer == self.answer:
             self.grade += 1 # add a point to grade
-            praise = random.choice(praise_list)
+            praise = random.choice(praise_list) # randomly picked praises
             self.user_feedback = praise
+            self.confirm_button.config(state=DISABLED)  # disables confirm button so the user only gets one guess
+            self.next_button.config(state=NORMAL) # user can only go to the next question if they have answered
+
         # if answer is blank
-        elif self.answer_entry == "":
+        elif self.user_answer == "":
             self.user_feedback = ("Please don't leave it blank!")
-        # any other answer
+            # button does not get disabled here
+
+        # incorrect answer
         else:
             self.user_feedback = ("Incorrect!")
+            self.confirm_button.config(state=DISABLED)  # disables confirm button so the user only gets one guess
+            self.next_button.config(state=NORMAL) # user can only go to the next question if they have answered
 
         # sets the feedback
         self.feedback.config(text=self.user_feedback)
-
-
 
 # main routine
 if __name__ == "__main__":
