@@ -1,4 +1,4 @@
-# Help GUI (component 2) for Animals Quiz
+# Hard GUI (component 5) for Animals Quiz
 
 from tkinter import *
 from functools import partial # to prevent unwanted windows
@@ -16,21 +16,20 @@ class Hard:
         skip_bg= "#f29f9f" # light red
         stats_bg ="#fbac47" # orange
 
-        # question number
-        question_num = 1
+        # set question number and grade to 0 at the beginning
+        self.question_num = 0
+        self.grade = 0
 
         # GUI To get starting balance and stakes
         self.hard_frame = Frame(padx=10, pady=10, bg=background_colour)
         self.hard_frame.grid()
 
         # Question heading (row 0)
-        self.question_num_label = Label(self.hard_frame, text="Question {}/20".format(question_num),
-                                       font="Arial 19 bold", justify=LEFT, bg=background_colour)
+        self.question_num_label = Label(self.hard_frame, font="Arial 19 bold", justify=LEFT, bg=background_colour)
         self.question_num_label.grid(row=0)
 
         # Question (row 1)
-        self.ask_question = Label(self.hard_frame, text="Question:",
-                                         wrap=350, justify=LEFT, padx=10, pady=10, bg=background_colour)
+        self.ask_question = Label(self.hard_frame, wrap=350, justify=LEFT, padx=10, pady=10, bg=background_colour)
         self.ask_question.grid(row=1)
 
         # Entry box ... (row 2)
@@ -38,18 +37,23 @@ class Hard:
         self.entry_frame = Frame(self.hard_frame, bg=background_colour)
         self.entry_frame.grid(row=2, pady=10)
 
-        # Answer Box
+        # Answer Entry Box
         self.answer_entry = Entry(self.entry_frame, font="Arial 16 bold")
+        self.answer_entry.lower()
         self.answer_entry.grid(row=0, column=0)
 
         # Answer Confirm button
         self.confirm_button = Button(self.entry_frame, font="Arial 12 bold",
-                                     text="OK", bg=next_bg) #, command=self.check_answer)
+                                     text="OK", bg=next_bg, command=self.check_answer)
         self.confirm_button.grid(row=0, column=1)
+
+        # User Feedback
+        self.feedback = Label(self.hard_frame, font="Arial 12", bg=background_colour) # some reason it's not working
+        self.feedback.grid(row=3)
 
         # Button frame (row 3)
         self.button_frame = Frame(self.hard_frame, bg=background_colour)
-        self.button_frame.grid(row=3)
+        self.button_frame.grid(row=4)
 
         # Skip Button
         self.skip_button = Button(self.button_frame, font="Arial 12 bold",
@@ -58,12 +62,9 @@ class Hard:
 
         # Next Button
         self.next_button = Button(self.button_frame, font="Arial 12 bold",
-                                  text="Next", bg=next_bg, command=self.generate_ques()) #, font=, width)
+                                  text="Next", bg=next_bg, command=self.generate_ques())
         self.next_button.grid(row=0, column=1, padx=5, pady=10)
 
-        # Feedback (row 4)
-        self.feedback = Label(self.hard_frame, bg=background_colour)#, text=user_feedback)
-        self.feedback.grid(row=4, column=0)
 
         # Quiz Statistics Button (row 5)
         self.stats_button = Button(self.hard_frame, text="Quiz Statistics",
@@ -81,37 +82,39 @@ class Hard:
                 results.append(row)
 
         question_list = random.choice(results)  # randomly chooses a row
-        #print(question_list)
+        print(question_list)
 
         question = question_list[0]  # adult animal term
-        answer = question_list[1]  # baby animal term
+        self.answer = question_list[1]  # baby animal term
 
         # asks questions
-        self.ask = ("What is the baby term for {}?".format(question)).lower()
+        self.ask = ("What is the baby term for {}?".format(question))
+        self.ask_question.config(text=self.ask)
 
-    """def check_answer(self):
+        # adds one to the question number
+        self.question_num += 1
+        self.question_num_label.config(text="Question {}/20".format(self.question_num))
+
+    def check_answer(self):
+        # randomly picks a praise for the user
         praise_list = ["Good job!", "Well done!", "Amazing!", "You did well!"]
 
-        answer = self.answer_entry.get()
-        ask = self.ask.get()
-        grade = self.grade.get()
-        question_num = self.question_number_label.get()
-        if ask == answer:
-            grade += 1
+        print(self.ask,self.answer, self.answer_entry) # testing purposes
+
+        # if answer is correct
+        if self.answer_entry == self.answer:
+            self.grade += 1 # add a point to grade
             praise = random.choice(praise_list)
-            user_feedback = praise
-        elif ask == "":
-            user_feedback = ("Please don't leave it blank!")
+            self.user_feedback = praise
+        # if answer is blank
+        elif self.answer_entry == "":
+            self.user_feedback = ("Please don't leave it blank!")
+        # any other answer
         else:
-            user_feedback = ("Incorrect!")
-        # question_num += 1
-        """
+            self.user_feedback = ("Incorrect!")
 
-
-
-
-
-
+        # sets the feedback
+        self.feedback.config(text=self.user_feedback)
 
 
 
