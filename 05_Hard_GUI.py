@@ -11,7 +11,7 @@ class Hard:
 
         # colours and fonts
         background_colour = "#e2d6ff" # purple
-        button_font = "Arial 12"
+        button_font = "Arial 12 bold"
         next_bg = "light gray"
         skip_bg= "#f29f9f" # light red
         stats_bg ="#fbac47" # orange
@@ -43,9 +43,10 @@ class Hard:
         self.answer_entry.grid(row=0, column=0)
 
         # Answer Confirm button
-        self.confirm_button = Button(self.entry_frame, font="Arial 12 bold",
+        self.confirm_button = Button(self.entry_frame, font=button_font,
                                      text="OK", bg=next_bg, command=self.check_answer)
 
+        # binding not working
         self.confirm_button.focus()
         self.confirm_button.bind('<Return>', lambda e: self.check_answer())
 
@@ -60,15 +61,18 @@ class Hard:
         self.button_frame.grid(row=4)
 
         # Skip Button
-        self.skip_button = Button(self.button_frame, font="Arial 12 bold",
-                                  text="Skip", bg=skip_bg, command=self.generate_ques())  # ,command=self. , font=, width)
+        self.skip_button = Button(self.button_frame, font=button_font,
+                                  text="Skip", bg=skip_bg, command=lambda:self.generate_ques())
         self.skip_button.grid(row=0, column=0, padx=5, pady=10)
 
         # Next Button
-        self.next_button = Button(self.button_frame, font="Arial 12 bold",
+        self.next_button = Button(self.button_frame, font=button_font,
                                   text="Next", bg=next_bg, command=lambda:self.generate_ques())
 
         self.next_button.grid(row=0, column=1, padx=5, pady=10)
+
+        # label for first tion
+        self.first = Label(self.button_frame, command=self.generate_ques())
 
 
         # Quiz Statistics Button (row 5)
@@ -110,7 +114,9 @@ class Hard:
 
 
         # takes the answer
-        self.user_answer = self.answer_entry.get() #
+        self.user_answer = self.answer_entry.get()
+        self.user_answer = self.user_answer.lower() # turns entry to lowercase
+
 
         # if answer is correct
         if self.user_answer == self.answer:
