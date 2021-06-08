@@ -45,6 +45,10 @@ class Hard:
         # Answer Confirm button
         self.confirm_button = Button(self.entry_frame, font="Arial 12 bold",
                                      text="OK", bg=next_bg, command=self.check_answer)
+
+        self.confirm_button.focus()
+        self.confirm_button.bind('<Return>', lambda e: self.check_answer())
+
         self.confirm_button.grid(row=0, column=1)
 
         # User Feedback
@@ -63,6 +67,7 @@ class Hard:
         # Next Button
         self.next_button = Button(self.button_frame, font="Arial 12 bold",
                                   text="Next", bg=next_bg, command=lambda:self.generate_ques())
+
         self.next_button.grid(row=0, column=1, padx=5, pady=10)
 
 
@@ -103,7 +108,6 @@ class Hard:
         # different praises
         praise_list = ["Good job!", "Well done!", "Amazing!", "You did well!"]
 
-        self.confirm_button.config(state=DISABLED) # disables while checking so user can't change it
 
         # takes the answer
         self.user_answer = self.answer_entry.get() #
@@ -113,7 +117,8 @@ class Hard:
             self.grade += 1 # add a point to grade
             praise = random.choice(praise_list) # randomly picked praises
             self.user_feedback = praise
-              # disables confirm button so the user only gets one guess
+            # disables confirm button so the user only gets one guess
+            self.confirm_button.config(state=DISABLED) # disables while checking so user can't change it
             self.next_button.config(state=NORMAL) # user can only go to the next question if they have answered
 
         # if answer is blank
@@ -124,7 +129,7 @@ class Hard:
         # incorrect answer
         else:
             self.user_feedback = ("Incorrect!")
-            #self.confirm_button.config(state=DISABLED)  # disables confirm button so the user only gets one guess
+            self.confirm_button.config(state=DISABLED)  # disables confirm button so the user only gets one guess
             self.next_button.config(state=NORMAL) # user can only go to the next question if they have answered
 
         # sets the feedback
