@@ -57,13 +57,12 @@ class Hard:
 
         # Skip Button
         self.skip_button = Button(self.button_frame, font="Arial 12 bold",
-                                  text="Skip", bg=skip_bg)  # ,command=self. , font=, width)
+                                  text="Skip", bg=skip_bg, command=self.generate_ques())  # ,command=self. , font=, width)
         self.skip_button.grid(row=0, column=0, padx=5, pady=10)
 
         # Next Button
         self.next_button = Button(self.button_frame, font="Arial 12 bold",
-                                  text="Next", bg=next_bg, command=self.generate_ques())
-        self.next_button.config(state=DISABLED) # user can only go to the next question if they have answered
+                                  text="Next", bg=next_bg, command=lambda:self.generate_ques())
         self.next_button.grid(row=0, column=1, padx=5, pady=10)
 
 
@@ -83,11 +82,12 @@ class Hard:
                 results.append(row)
 
         question_list = random.choice(results)  # randomly chooses a row
-        print(question_list)
+
 
         question = question_list[0]  # adult animal term
         self.answer = question_list[1]  # baby animal term
 
+        print(question, self.answer)
         # asks questions
         self.ask = ("What is the baby term for {}?".format(question))
         self.ask_question.config(text=self.ask)
@@ -97,19 +97,23 @@ class Hard:
         self.question_num += 1
         self.question_num_label.config(text="Question {}/20".format(self.question_num))
 
+        self.confirm_button.config(state=NORMAL) # enables for the next question
+
     def check_answer(self):
         # different praises
         praise_list = ["Good job!", "Well done!", "Amazing!", "You did well!"]
 
+        self.confirm_button.config(state=DISABLED) # disables while checking so user can't change it
+
         # takes the answer
-        self.user_answer = self.answer_entry.get()
+        self.user_answer = self.answer_entry.get() #
 
         # if answer is correct
         if self.user_answer == self.answer:
             self.grade += 1 # add a point to grade
             praise = random.choice(praise_list) # randomly picked praises
             self.user_feedback = praise
-            self.confirm_button.config(state=DISABLED)  # disables confirm button so the user only gets one guess
+              # disables confirm button so the user only gets one guess
             self.next_button.config(state=NORMAL) # user can only go to the next question if they have answered
 
         # if answer is blank
@@ -120,11 +124,12 @@ class Hard:
         # incorrect answer
         else:
             self.user_feedback = ("Incorrect!")
-            self.confirm_button.config(state=DISABLED)  # disables confirm button so the user only gets one guess
+            #self.confirm_button.config(state=DISABLED)  # disables confirm button so the user only gets one guess
             self.next_button.config(state=NORMAL) # user can only go to the next question if they have answered
 
         # sets the feedback
         self.feedback.config(text=self.user_feedback)
+        print(self.grade)
 
 # main routine
 if __name__ == "__main__":
