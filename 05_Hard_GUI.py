@@ -68,12 +68,10 @@ class Hard:
         # Next Button
         self.next_button = Button(self.button_frame, font=button_font,
                                   text="Next", bg=next_bg, command=lambda:self.generate_ques())
-
         self.next_button.grid(row=0, column=1, padx=5, pady=10)
 
         # label for first tion
         self.first = Label(self.button_frame, command=self.generate_ques())
-
 
         # Quiz Statistics Button (row 5)
         self.stats_button = Button(self.hard_frame, text="Quiz Statistics",
@@ -100,13 +98,13 @@ class Hard:
         # asks questions
         self.ask = ("What is the baby term for {}?".format(question))
         self.ask_question.config(text=self.ask)
-        print(self.ask_question)
 
         # adds one to the question number
         self.question_num += 1
         self.question_num_label.config(text="Question {}/20".format(self.question_num))
 
         self.confirm_button.config(state=NORMAL) # enables for the next question
+        self.next_button.config(state=DISABLED)  # enables for the next question
 
     def check_answer(self):
         # different praises
@@ -117,7 +115,7 @@ class Hard:
         self.user_answer = self.answer_entry.get()
         self.user_answer = self.user_answer.lower() # turns entry to lowercase
 
-
+        self.next_button.config(state=NORMAL)
         # if answer is correct
         if self.user_answer == self.answer:
             self.grade += 1 # add a point to grade
