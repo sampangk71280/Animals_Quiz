@@ -69,14 +69,14 @@ class Start:
         # Difficulty Buttons
         # Easy button
         self.easy_button = Button(self.button_frame, text="Easy",
-                                       command=lambda: self.to_quiz(1),
+                                       #command= self.to_easy,
                                   font=button_font, bg=easy_bg, width=7)
         self.easy_button.grid(row=0, column=0, padx=25, pady=15)
         self.easy_button.config(state=DISABLED)
 
         # Hard button
         self.hard_button = Button(self.button_frame, text="Hard",
-                                  command=lambda: self.to_hard(2),
+                                  command=self.to_hard,
                                   font=button_font, bg=hard_bg, width=7)
         self.hard_button.grid(row=0, column=1, padx=25, pady=15)
         self.hard_button.config(state=DISABLED)
@@ -124,21 +124,25 @@ class Start:
             self.question_error_label.config(text=error_feedback) # shows error message
         else:
             # set question to amount entered by user
-            self.starting_questions.set(starting_balance)
+            self.starting_questions = (starting_balance)
+        print(starting_balance, self.starting_questions)
 
 
-    # def to_quiz(self, stakes):
-    #     # retrieve starting balance
-    #     starting_balance = self.starting_questions.get()
-    #
-    #     Hard(self, stakes, starting_balance)
-    #
-    #     # hide start up window
-    #     self.start_frame.destroy()
+
+    def to_hard(self):
+        # retrieve starting balance
+        starting_balance = self.starting_questions.get()
+
+        Hard(self, starting_balance)
+
+        # hide start up window
+        self.start_frame.destroy()
 
 
 class Hard:
-    def __init__(self, parent):
+    def __init__(self, partner, starting_balance):
+
+        print(starting_balance)
 
         # colours and fonts
         background_colour = "#e2d6ff" # purple
@@ -150,6 +154,8 @@ class Hard:
         # set question number and grade to 0 at the beginning
         self.question_num = 0
         self.grade = 0
+        self.max_num = IntVar()
+        self.max_num.set(starting_balance) # sets the maximum of questions asked
 
         # GUI To get starting balance and stakes
         self.hard_frame = Frame(padx=10, pady=10, bg=background_colour)
@@ -232,7 +238,7 @@ class Hard:
 
         # adds one to the question number
         self.question_num += 1
-        self.question_num_label.config(text="Question {}/20".format(self.question_num))
+        self.question_num_label.config(text="Question {}/{}".format(self.question_num, self.max_num))
 
         self.confirm_button.config(state=NORMAL) # enables for the next question
         self.next_button.config(state=DISABLED)  # enables for the next question
@@ -260,6 +266,7 @@ class Hard:
         elif self.user_answer == "":
             self.user_feedback = ("Please don't leave it blank!")
             # button does not get disabled here
+            self.next_button.config(state=DISABLED)  # keep next button disabled
 
         # incorrect answer
         else:

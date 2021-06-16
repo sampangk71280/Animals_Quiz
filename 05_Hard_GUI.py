@@ -110,7 +110,6 @@ class Hard:
         # different praises
         praise_list = ["Good job!", "Well done!", "Amazing!", "You did well!"]
 
-
         # takes the answer
         self.user_answer = self.answer_entry.get()
         self.user_answer = self.user_answer.lower() # turns entry to lowercase
@@ -128,7 +127,8 @@ class Hard:
         # if answer is blank
         elif self.user_answer == "":
             self.user_feedback = ("Please don't leave it blank!")
-            # button does not get disabled here
+            # OK button does not get disabled here
+            self.next_button.config(state=DISABLED) # keep next button disabled
 
         # incorrect answer
         else:
