@@ -51,8 +51,10 @@ class Start:
         self.question_entry.grid(row=0, column=0)
 
         # Question button
-        self.confirm_button = Button(self.entry_error_frame, font="Arian 12 bold",
+        self.confirm_button = Button(self.entry_error_frame, font="Arial 12 bold",
                                      text="Confirm",command=self.int_check)
+        self.confirm_button.focus()
+        self.confirm_button.bind('<Return>', lambda e:self.int_check())
         self.confirm_button.grid(row=0, column=1, padx=5)
 
         # Error message
@@ -131,7 +133,7 @@ class Start:
     def to_hard(self):
         # retrieve starting balance
         starting_balance = self.starting_balance
-        print(starting_balance )
+
         Hard(self, starting_balance)
 
         # hide start up window
@@ -154,7 +156,6 @@ class Hard:
         self.question_num = 0
         self.grade = 0
         self.max_num = (starting_balance) # sets the maximum of questions asked
-        print(self.max_num)
 
         # GUI To get starting balance and stakes
         self.hard_frame = Frame(padx=10, pady=10, bg=background_colour)
@@ -185,7 +186,6 @@ class Hard:
         # binding not working
         self.confirm_button.focus()
         self.confirm_button.bind('<Return>', lambda e: self.check_answer())
-
         self.confirm_button.grid(row=0, column=1)
 
         # User Feedback
@@ -206,14 +206,19 @@ class Hard:
                                   text="Next", bg=next_bg, command=lambda:self.generate_ques())
         self.next_button.grid(row=0, column=1, padx=5, pady=10)
 
-        # label for first tion
-        self.first = Label(self.button_frame, command=self.generate_ques())
+        # First question Label
+        self.first = Label(self.button_frame, command=self.generate_ques()) # check this
+
+        # Finish Label
+        self.finish=Label(self.hard_frame, font="Arial 12", bg=background_colour)
+        self.finish.grid(row=5)
 
         # Quiz Statistics Button (row 5)
         self.stats_button = Button(self.hard_frame, text="Quiz Statistics",
                                   bg=stats_bg, font=button_font, width=25,
                                     ) #,command=self.help)
-        self.stats_button.grid(row=5, pady=10)
+        self.stats_button.grid(row=6, pady=10)
+
 
     def generate_ques(self):
         results = [] # contains the adult and baby term
@@ -241,6 +246,7 @@ class Hard:
 
         self.confirm_button.config(state=NORMAL) # enables for the next question
         self.next_button.config(state=DISABLED)  # enables for the next question
+
 
     def check_answer(self):
         # different praises
@@ -272,6 +278,14 @@ class Hard:
             self.user_feedback = ("Incorrect!")
             self.confirm_button.config(state=DISABLED)  # disables confirm button so the user only gets one guess
             self.next_button.config(state=NORMAL) # user can only go to the next question if they have answered
+
+        # disables generating a new question when the max number of questions has been reached
+        if self.question_num == self.max_num:
+            self.next_button.config(state=DISABLED)
+            self.skip_button.config(state=DISABLED)
+            self.finish.config(text="Well done! You have finished the quiz!")
+
+
 
         # sets the feedback
         self.feedback.config(text=self.user_feedback)

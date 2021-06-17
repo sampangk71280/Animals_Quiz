@@ -19,18 +19,52 @@
     <favorites_list name="Animals_Quiz" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="05_Hard_GUI_v2.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/05_Hard_GUI_v2.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="154" column="22" selection-start-line="154" selection-start-column="22" selection-end-line="154" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.43392858">
+      <split-first>
+        <leaf>
+          <file leaf-file-name="05_Hard_GUI_v2.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/05_Hard_GUI_v2.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1586">
+                  <caret line="157" column="79" selection-start-line="157" selection-start-column="79" selection-end-line="157" selection-end-column="79" />
+                  <folding>
+                    <marker date="1623970465673" expanded="true" signature="5976:9084" ph="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="AA_complied_game_v2.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/../../Mystery_Box_Prac/AA_complied_game_v2.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-1542">
+                  <caret line="216" column="69" selection-start-line="216" selection-start-column="57" selection-end-line="216" selection-end-column="69" />
+                  <folding>
+                    <element signature="e#0#21#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="05_Hard_GUI_v2.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/05_Hard_GUI_v2.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="266">
+                  <caret line="285" column="42" selection-start-line="285" selection-start-column="42" selection-end-line="285" selection-end-column="42" />
+                  <folding>
+                    <element signature="e#167#5911#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -115,6 +149,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="Animals_Quiz" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/05_Hard_GUI_v2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="AA_complied_game_v2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../Mystery_Box_Prac" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Animals_Quiz" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../Mystery_Box_Prac/AA_complied_game_v2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -253,12 +304,14 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
-    <list size="1">
+    <list size="2">
       <item index="0" class="java.lang.String" itemvalue="Python.05_Hard_GUI_v2" />
+      <item index="1" class="java.lang.String" itemvalue="Python.AA_complied_game_v2" />
     </list>
     <recent_temporary>
-      <list size="1">
+      <list size="2">
         <item index="0" class="java.lang.String" itemvalue="Python.05_Hard_GUI_v2" />
+        <item index="1" class="java.lang.String" itemvalue="Python.AA_complied_game_v2" />
       </list>
     </recent_temporary>
   </component>
@@ -311,37 +364,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/05_Hard_GUI_v2.py</url>
-          <line>127</line>
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/05_Hard_GUI_v2.py</url>
-          <line>133</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/05_Hard_GUI_v2.py</url>
-          <line>156</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
       <option name="time" value="4" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../Mystery_Box_Prac/AA_complied_game_v2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-544">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/05_Hard_GUI_v2-D22-053.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3213">
@@ -350,11 +377,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../Mystery_Box_Prac/AA_complied_game_v2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1542">
+          <caret line="216" column="69" selection-start-line="216" selection-start-column="57" selection-end-line="216" selection-end-column="69" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/05_Hard_GUI_v2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="154" column="22" selection-start-line="154" selection-start-column="22" selection-end-line="154" selection-end-column="22" />
-          <folding />
+        <state relative-caret-position="266">
+          <caret line="285" column="42" selection-start-line="285" selection-start-column="42" selection-end-line="285" selection-end-column="42" />
+          <folding>
+            <element signature="e#167#5911#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
