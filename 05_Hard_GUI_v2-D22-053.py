@@ -122,26 +122,26 @@ class Start:
 
         if has_errors == "yes":
             self.question_error_label.config(text=error_feedback) # shows error message
-        # else:
-        #     # set question to amount entered by user
-        #     self.starting_questions.set(self.starting_balance)
+        else:
+            # set question to amount entered by user
+            self.starting_questions.get(self.starting_balance)
         print(self.starting_balance)
 
 
     def to_hard(self):
         # retrieve starting balance
-        starting_balance = self.starting_balance
-        print(starting_balance )
-        Hard(self, starting_balance)
+        self.starting_balance = self.starting_questions.get()
+
+        Hard(self)
 
         # hide start up window
         self.start_frame.destroy()
 
 
 class Hard:
-    def __init__(self, partner, starting_balance):
+    def __init__(self, partner):
 
-        #print(starting_balance)
+
 
         # colours and fonts
         background_colour = "#e2d6ff" # purple
@@ -153,7 +153,8 @@ class Hard:
         # set question number and grade to 0 at the beginning
         self.question_num = 0
         self.grade = 0
-        self.max_num = (starting_balance) # sets the maximum of questions asked
+        self.max_num = IntVar()
+        self.max_num.set(self.starting_balance) # sets the maximum of questions asked
         print(self.max_num)
 
         # GUI To get starting balance and stakes
