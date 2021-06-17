@@ -90,7 +90,7 @@ class Start:
     # integer checker
     # reused from mystery box and edited to suit animal quiz
     def int_check(self):
-        starting_balance = self.question_entry.get()
+        self.starting_balance = self.question_entry.get()
 
         # Disable all difficulty buttons until the user has confirmed the amount of questions
         self.easy_button.config(state=DISABLED)
@@ -102,13 +102,13 @@ class Start:
         has_errors = "yes"
 
         try:
-            starting_balance = int(starting_balance)
+            self.starting_balance = int(self.starting_balance)
 
             # less than 0 questions, breaks
-            if starting_balance <= 0:
+            if self.starting_balance <= 0:
                 error_feedback = "Sorry you must enter a number higher than 0!"
             # more than 20 questions, breaks
-            elif starting_balance > 20:
+            elif self.starting_balance > 20:
                 error_feedback = "Too high! The maximum questions " \
                                  "you can answer is 20"
             # 1-20 questions, works
@@ -124,9 +124,8 @@ class Start:
             self.question_error_label.config(text=error_feedback) # shows error message
         else:
             # set question to amount entered by user
-            self.starting_questions = (starting_balance)
-        print(starting_balance, self.starting_questions)
-
+            self.starting_questions.get(self.starting_balance)
+        print(self.starting_balance)
 
 
     def to_hard(self):
@@ -156,6 +155,7 @@ class Hard:
         self.grade = 0
         self.max_num = IntVar()
         self.max_num.set(starting_balance) # sets the maximum of questions asked
+        print(self.max_num)
 
         # GUI To get starting balance and stakes
         self.hard_frame = Frame(padx=10, pady=10, bg=background_colour)
