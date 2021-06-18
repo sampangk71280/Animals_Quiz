@@ -63,7 +63,6 @@ class Start:
                                         wrap=275, justify=LEFT, bg=background_colour)
         self.question_error_label.grid(row=1, columnspan=2, pady=5)
 
-
         # Button frame (row 4)
         self.button_frame = Frame(self.start_frame, bg=background_colour)
         self.button_frame.grid(row=4)
@@ -87,7 +86,6 @@ class Start:
         self.help_button = Button(self.start_frame, text="Help/Rules",
                                   bg="#badaaa", font=button_font, width=25)
         self.help_button.grid(row=5, pady=10)
-
 
     # integer checker
     # reused from mystery box and edited to suit animal quiz
@@ -124,9 +122,7 @@ class Start:
 
         if has_errors == "yes":
             self.question_error_label.config(text=error_feedback) # shows error message
-        # else:
-        #     # set question to amount entered by user
-        #     self.starting_questions.set(self.starting_balance)
+
         print(self.starting_balance)
 
 
@@ -143,8 +139,6 @@ class Start:
 class Hard:
     def __init__(self, partner, starting_balance):
 
-        #print(starting_balance)
-
         # colours and fonts
         background_colour = "#e2d6ff" # purple
         button_font = "Arial 12 bold"
@@ -157,7 +151,7 @@ class Hard:
         self.grade = 0
         self.max_num = (starting_balance) # sets the maximum of questions asked
 
-        # GUI To get starting balance and stakes
+        # Main Frame
         self.hard_frame = Frame(padx=10, pady=10, bg=background_colour)
         self.hard_frame.grid()
 
@@ -176,17 +170,16 @@ class Hard:
 
         # Answer Entry Box
         self.answer_entry = Entry(self.entry_frame, font="Arial 16 bold")
-        self.answer_entry.lower()
+        # Binds enter key to command button
+        self.answer_entry.focus()
+        self.answer_entry.bind('<Return>', lambda e: self.check_answer())
         self.answer_entry.grid(row=0, column=0)
 
         # Answer Confirm button
         self.confirm_button = Button(self.entry_frame, font=button_font,
                                      text="OK", bg=next_bg, command=self.check_answer)
-
-        # binding not working
-        self.confirm_button.focus()
-        self.confirm_button.bind('<Return>', lambda e: self.check_answer())
         self.confirm_button.grid(row=0, column=1)
+
 
         # User Feedback
         self.feedback = Label(self.hard_frame, font="Arial 12", bg=background_colour) # some reason it's not working
@@ -206,10 +199,11 @@ class Hard:
                                   text="Next", bg=next_bg, command=lambda:self.generate_ques())
         self.next_button.grid(row=0, column=1, padx=5, pady=10)
 
-        # First question Label
-        self.first = Label(self.button_frame, command=self.generate_ques()) # check this
+        # First Question Label
+        # automatically generates the first question
+        self.first = Label(self.button_frame, command=self.generate_ques())
 
-        # Finish Label
+        # Finish Label (row 4)
         self.finish=Label(self.hard_frame, font="Arial 12", bg=background_colour)
         self.finish.grid(row=5)
 
@@ -218,7 +212,6 @@ class Hard:
                                   bg=stats_bg, font=button_font, width=25,
                                     ) #,command=self.help)
         self.stats_button.grid(row=6, pady=10)
-
 
     def generate_ques(self):
         results = [] # contains the adult and baby term
@@ -231,7 +224,6 @@ class Hard:
 
         question_list = random.choice(results)  # randomly chooses a row
 
-
         question = question_list[0]  # adult animal term
         self.answer = question_list[1]  # baby animal term
 
@@ -240,6 +232,10 @@ class Hard:
         self.ask = ("What is the baby term for {}?".format(question))
         self.ask_question.config(text=self.ask)
 
+        # binds enter key to OK button
+        self.confirm_button.focus()
+        self.confirm_button.bind('<Return>', lambda e:self.check_answer())
+
         # adds one to the question number
         self.question_num += 1
         self.question_num_label.config(text="Question {}/{}".format(self.question_num, self.max_num))
@@ -247,15 +243,18 @@ class Hard:
         self.confirm_button.config(state=NORMAL) # enables for the next question
         self.next_button.config(state=DISABLED)  # enables for the next question
 
-
     def check_answer(self):
         # different praises
-        praise_list = ["Good job!", "Well done!", "Amazing!", "You did well!"]
-
+        praise_list = ["Good job!", "Well done!", "Amazing!", "You did well!",
+                       "Fantastic!", "Terrific!"]
 
         # takes the answer
         self.user_answer = self.answer_entry.get()
         self.user_answer = self.user_answer.lower() # turns entry to lowercase
+
+        # Enter key bind is focused on Next button and unfocused on OK button
+        self.next_button.focus()
+        self.next_button.bind('<Return>', lambda e:self.generate_ques())
 
         self.next_button.config(state=NORMAL)
         # if answer is correct
@@ -263,19 +262,18 @@ class Hard:
             self.grade += 1 # add a point to grade
             praise = random.choice(praise_list) # randomly picked praises
             self.user_feedback = praise
-            # disables confirm button so the user only gets one guess
             self.confirm_button.config(state=DISABLED) # disables while checking so user can't change it
             self.next_button.config(state=NORMAL) # user can only go to the next question if they have answered
 
         # if answer is blank
         elif self.user_answer == "":
             self.user_feedback = ("Please don't leave it blank!")
-            # button does not get disabled here
+            # confirm button does not get disabled here
             self.next_button.config(state=DISABLED)  # keep next button disabled
 
         # incorrect answer
         else:
-            self.user_feedback = ("Incorrect!")
+            self.user_feedback = ("Incorrect! The answer was {}.".format(self.answer))
             self.confirm_button.config(state=DISABLED)  # disables confirm button so the user only gets one guess
             self.next_button.config(state=NORMAL) # user can only go to the next question if they have answered
 
@@ -283,9 +281,8 @@ class Hard:
         if self.question_num == self.max_num:
             self.next_button.config(state=DISABLED)
             self.skip_button.config(state=DISABLED)
-            self.finish.config(text="Well done! You have finished the quiz!")
-
-
+            self.finish.config(text="Well done! You have finished the quiz!") # tells user end of quiz
+            self.stats_button.focus() # focuses on stats button when done
 
         # sets the feedback
         self.feedback.config(text=self.user_feedback)
