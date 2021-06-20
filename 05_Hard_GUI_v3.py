@@ -225,6 +225,7 @@ class Hard:
             for row in reader:
                 results.append(row)
 
+        print(results)
         question_list = random.choice(results)  # randomly chooses a row
 
         question = question_list[0]  # adult animal term
@@ -234,6 +235,9 @@ class Hard:
         # asks questions
         self.ask = ("What is the baby term for {}?".format(question))
         self.ask_question.config(text=self.ask)
+
+        results.remove(question_list) # removes the question so it does not repeat
+        print(results)
 
         # binds enter key to OK button
         self.confirm_button.focus()

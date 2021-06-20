@@ -89,6 +89,7 @@ class Start:
         self.help_button.grid(row=5, pady=10)
 
 
+
     # integer checker
     # reused from mystery box and edited to suit animal question
     def int_check(self):
