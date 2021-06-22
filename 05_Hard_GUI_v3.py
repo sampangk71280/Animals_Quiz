@@ -142,6 +142,15 @@ class Start:
 class Hard:
     def __init__(self, partner, starting_balance):
 
+        self.results = []  # contains the adult and baby term
+        # opens csv file
+        with open('animals_quiz(final).csv') as file:
+            # make csv file into a list
+            reader = csv.reader(file)
+            next(reader)  # skips the heading in csv
+            for row in reader:
+                self.results.append(row)
+
         # colours and fonts
         background_colour = "#e2d6ff" # purple
         button_font = "Arial 12 bold"
@@ -184,11 +193,11 @@ class Hard:
         self.confirm_button.grid(row=0, column=1)
 
 
-        # User Feedback
+        # User Feedback (row 3)
         self.feedback = Label(self.hard_frame, font="Arial 12", bg=background_colour) # some reason it's not working
         self.feedback.grid(row=3)
 
-        # Button frame (row 3)
+        # Button frame (row 4)
         self.button_frame = Frame(self.hard_frame, bg=background_colour)
         self.button_frame.grid(row=4)
 
@@ -206,38 +215,27 @@ class Hard:
         # automatically generates the first question
         self.first = Label(self.button_frame, command=self.generate_ques())
 
-        # Finish Label (row 4)
-        self.finish=Label(self.hard_frame, font="Arial 12", bg=background_colour)
-        self.finish.grid(row=5)
-
         # Quiz Statistics Button (row 5)
         self.stats_button = Button(self.hard_frame, text="Quiz Statistics",
                                   bg=stats_bg, font=button_font, width=25,
                                     ) #,command=self.help)
-        self.stats_button.grid(row=6, pady=10)
+        self.stats_button.grid(row=5, pady=10)
 
+    # generates question every time the next/skip button is clicked
     def generate_ques(self):
-        results = [] # contains the adult and baby term
-        with open('animals_quiz(final).csv') as file:
-            # make csv file into a list
-            reader = csv.reader(file)
-            next(reader) # skips the heading in csv
-            for row in reader:
-                results.append(row)
 
-        print(results)
-        question_list = random.choice(results)  # randomly chooses a row
+        question_list = random.choice(self.results)  # randomly chooses a row
 
         question = question_list[0]  # adult animal term
         self.answer = question_list[1]  # baby animal term
 
-        print(question, self.answer)
-        # asks questions
+        print(question, self.answer)  # prints out answers for testing purposes
+
+        # formats the question to the text
         self.ask = ("What is the baby term for {}?".format(question))
         self.ask_question.config(text=self.ask)
 
-        results.remove(question_list) # removes the question so it does not repeat
-        print(results)
+        self.results.remove(question_list) # removes the animal from list so no repeats
 
         # binds enter key to OK button
         self.confirm_button.focus()
@@ -247,14 +245,24 @@ class Hard:
         self.question_num += 1
         self.question_num_label.config(text="Question {}/{}".format(self.question_num, self.max_num))
 
-        self.confirm_button.config(state=NORMAL) # enables for the next question
-        self.next_button.config(state=DISABLED)  # enables for the next question
+        # enabled to check answer
+        self.confirm_button.config(state=NORMAL)
+        # disabled when user has not guessed, user needs to skip for next question without guessing
+        self.next_button.config(state=DISABLED)
 
         # clears the entry box after each question
         self.answer_entry.delete(0, END)
-        self.answer_entry.focus() # focuses on entry box
+        self.answer_entry.focus() # focuses on entry box so user does not have to click on entry box for every question
         # clears the feedback text
         self.feedback.config(text="")
+
+        # disables generating a new question when the max number of questions has been reached
+        if self.question_num > self.max_num:
+            self.next_button.config(state=DISABLED)
+            self.skip_button.config(state=DISABLED)
+            self.question_num_label.config(text="Question {}/{}".format(self.question_num-1, self.max_num))
+            self.ask_question.config(text="Well done! You have finished the quiz!") # tells user end of quiz
+            self.stats_button.focus()  # focuses on stats button when done
 
     def check_answer(self):
         # different praises
@@ -268,8 +276,9 @@ class Hard:
         # Enter key bind is focused on Next button and unfocused on OK button
         self.next_button.focus()
         self.next_button.bind('<Return>', lambda e:self.generate_ques())
+        self.next_button.config(state=NORMAL)# enabled, ready to move to next question
 
-        self.next_button.config(state=NORMAL)
+
         # if answer is correct
         if self.user_answer == self.answer:
             self.grade += 1 # add a point to grade
@@ -281,7 +290,7 @@ class Hard:
         # if answer is blank
         elif self.user_answer == "":
             self.user_feedback = ("Please don't leave it blank!")
-            # confirm button does not get disabled here
+            # confirm button does not get disabled here, allows them to guess
             self.next_button.config(state=DISABLED)  # keep next button disabled
 
         # incorrect answer
@@ -289,13 +298,6 @@ class Hard:
             self.user_feedback = ("Incorrect! The answer was {}.".format(self.answer))
             self.confirm_button.config(state=DISABLED)  # disables confirm button so the user only gets one guess
             self.next_button.config(state=NORMAL) # user can only go to the next question if they have answered
-
-        # disables generating a new question when the max number of questions has been reached
-        if self.question_num == self.max_num:
-            self.next_button.config(state=DISABLED)
-            self.skip_button.config(state=DISABLED)
-            self.finish.config(text="Well done! You have finished the quiz!") # tells user end of quiz
-            self.stats_button.focus() # focuses on stats button when done
 
         # sets the feedback
         self.feedback.config(text=self.user_feedback)
