@@ -213,7 +213,7 @@ class Hard:
         self.grade = 0
         self.max_num = (starting_balance) # sets the maximum of questions asked
         history = [] # stores questions per round
-        history.append(self.max_num) # sets max number as first thing in list
+        #history.append(self.max_num) # sets max number as first thing in list
 
         # Main Frame
         self.hard_frame = Frame(padx=10, pady=10, bg=background_colour)
@@ -236,7 +236,7 @@ class Hard:
         self.answer_entry = Entry(self.entry_frame, font="Arial 16 bold")
         # Binds enter key to command button
         self.answer_entry.focus()
-        self.answer_entry.bind('<Return>', lambda e: self.check_answer())
+        self.answer_entry.bind('<Return>', lambda e: self.check_answer(history))
         self.answer_entry.grid(row=0, column=0)
 
         # Answer Confirm button
@@ -318,10 +318,11 @@ class Hard:
             self.question_num_label.config(text="Question {}/{}".format(self.question_num-1, self.max_num)) # puts the question label at max
             self.ask_question.config(text="Well done! You have finished the quiz!") # tells user end of quiz
             self.stats_button.focus()  # focuses on stats button when done
+            # self.stats_button.bind('<Return>', lambda e:self.to_stats(history,grade))
 
 
 
-    def check_answer(self):
+    def check_answer(self,history):
         # different praises
         praise_list = ["Good job!", "Well done!", "Amazing!", "You did well!",
                        "Fantastic!", "Terrific!"]
@@ -349,6 +350,7 @@ class Hard:
             self.user_feedback = ("Please don't leave it blank!")
             # confirm button does not get disabled here, allows them to guess
             self.next_button.config(state=DISABLED)  # keep next button disabled
+            self.answer_entry.focus()
 
         # incorrect answer
         else:
@@ -368,6 +370,11 @@ class Hard:
 class QuizStats:
     def __init__(self, partner, history, grade):
 
+        # sets colours
+        background_colour = "#EFEFEF"  # grey
+        export_colour = "#AEACEA" # dark purple
+        dismiss_colour = "#f29f9f" # light red
+
         print(history, grade)
 
         # disable help button
@@ -383,12 +390,12 @@ class QuizStats:
         self.stats_box.protocol('WM_DELETE_WINDOW', partial(self.close_stats, partner))
 
         # Set up GUI Frame
-        self.stats_frame = Frame(self.stats_box)
+        self.stats_frame = Frame(self.stats_box, bg=background_colour)
         self.stats_frame.grid()
 
         # Set up Help heading (row 0)
         self.stats_heading_label = Label(self.stats_frame, text="Quiz Statistics",
-                                         font="arial 19 bold")
+                                         font="arial 19 bold", bg=background_colour)
         self.stats_heading_label.grid(row=0)
 
         # To Export <instructions> (row 1)
@@ -396,17 +403,17 @@ class QuizStats:
                                          text="Here are your Quiz Statistics. "
                                               "Please use the Export button to "
                                               "save all your results. ", wrap=250,
-                                         font="arial 10 ",justify=LEFT,
+                                         font="arial 10 ",justify=LEFT, bg=background_colour,
                                          padx=10, pady=10)
         self.export_instructions.grid(row=1)
 
         # Starting Balance (row 2)
-        self.details_frame = Frame(self.stats_frame)
+        self.details_frame = Frame(self.stats_frame, bg=background_colour)
         self.details_frame.grid(row=2)
 
         # Grade
-        self.grade_label = Label(self.details_frame, text="You got {}/{}!".format(grade, history[0]),
-                                 wrap=250, font="arial 10",
+        self.grade_label = Label(self.details_frame, text="Well done! Your grade is {}/{}!".format(grade, history[0]),
+                                 wrap=250, font="arial 10", bg=background_colour,
                                  padx=10, pady=10)
         self.grade_label.grid(row=0)
 
@@ -417,12 +424,13 @@ class QuizStats:
 
         # Export button
         self.export_button = Button(self.export_dismiss_frame, text="Export",
-                                    font="Arial 12 bold") #,command=lambda: self.export(game_history, game_stats))
+                                    font="Arial 12 bold", bg=export_colour) #,command=lambda: self.export(game_history, game_stats))
         self.export_button.grid(row=0, column=0)
 
         # Dismiss button
         self.export_button = Button(self.export_dismiss_frame, text="Dismiss",
-                                    font="Arial 12 bold")#, command=partial(self.close_export, partner))
+                                    font="Arial 12 bold", command=partial(self.close_export, partner),
+                                    bg=dismiss_colour)
         self.export_button.grid(row=0, column=1)
 
     def close_stats(self, partner):
@@ -433,10 +441,10 @@ class QuizStats:
     #def export(self, game_history, game_stats):
     #   Export(self, game_history, game_stats)
 
-    # def close_export(self, partner):
-    #     # Put history button back to normal...
-    #     partner.stats_button.config(state=NORMAL)
-    #     self.stats_box.destroy()
+    def close_export(self, partner):
+        # Put history button back to normal...
+        partner.stats_button.config(state=NORMAL)
+        self.stats_box.destroy()
 
 
 # main routine
