@@ -1,10 +1,9 @@
-# Statistics GUI (component 6) for Animals Quiz
+# Hard GUI (component 5) for Animals Quiz
 
 from tkinter import *
 from functools import partial # to prevent unwanted windows
 import random
 import csv
-
 class Start:
     def __init__(self, parent):
 
@@ -73,7 +72,7 @@ class Start:
 
         # Difficulty Button
         # Hard button
-        self.hard_button = Button(self.button_frame, text="Start",  # renamed to start after easy mode removed
+        self.hard_button = Button(self.button_frame, text="Start", # renamed to start after easy mode removed
                                   command=self.to_hard,
                                   font=button_font, bg=hard_bg, width=7)
         self.hard_button.grid(row=0, column=1, padx=25, pady=15)
@@ -212,8 +211,6 @@ class Hard:
         self.question_num = 0
         self.grade = 0
         self.max_num = (starting_balance) # sets the maximum of questions asked
-        history = [] # stores questions per round
-        history.append(self.max_num) # sets max number as first thing in list
 
         # Main Frame
         self.hard_frame = Frame(padx=10, pady=10, bg=background_colour)
@@ -255,39 +252,36 @@ class Hard:
 
         # Skip Button
         self.skip_button = Button(self.button_frame, font=button_font,
-                                  text="Skip", bg=skip_bg, command=lambda:self.generate_ques(history))
+                                  text="Skip", bg=skip_bg, command=lambda:self.generate_ques())
         self.skip_button.grid(row=0, column=0, padx=5, pady=10)
 
         # Next Button
         self.next_button = Button(self.button_frame, font=button_font,
-                                  text="Next", bg=next_bg, command=lambda:self.generate_ques(history))
+                                  text="Next", bg=next_bg, command=lambda:self.generate_ques())
         self.next_button.grid(row=0, column=1, padx=5, pady=10)
 
         # First Question Label
         # automatically generates the first question
-        self.first = Label(self.button_frame, command=self.generate_ques(history))
+        self.first = Label(self.button_frame, command=self.generate_ques())
 
         # Quiz Statistics Button (row 5)
         self.stats_button = Button(self.hard_frame, text="Quiz Statistics",
                                   bg=stats_bg, font=button_font, width=25,
-                                   command=lambda:self.to_stats(history, self.grade))
+                                    ) #,command=self.help)
         self.stats_button.grid(row=5, pady=10)
 
     # generates question every time the next/skip button is clicked
-    def generate_ques(self,history):
+    def generate_ques(self):
 
         question_list = random.choice(self.results)  # randomly chooses a row
 
-        history.append(question_list) # puts question into history list
-
-        self.question = question_list[0]  # adult animal term
+        question = question_list[0]  # adult animal term
         self.answer = question_list[1]  # baby animal term
 
-
-        print(self.question, self.answer)  # prints out answers for testing purposes
+        print(question, self.answer)  # prints out answers for testing purposes
 
         # formats the question to the text
-        self.ask = ("What is the baby term for {}?".format(self.question))
+        self.ask = ("What is the baby term for {}?".format(question))
         self.ask_question.config(text=self.ask)
 
         self.results.remove(question_list) # removes the animal from list so no repeats
@@ -315,11 +309,9 @@ class Hard:
         if self.question_num > self.max_num:
             self.next_button.config(state=DISABLED)
             self.skip_button.config(state=DISABLED)
-            self.question_num_label.config(text="Question {}/{}".format(self.question_num-1, self.max_num)) # puts the question label at max
+            self.question_num_label.config(text="Question {}/{}".format(self.question_num-1, self.max_num))
             self.ask_question.config(text="Well done! You have finished the quiz!") # tells user end of quiz
             self.stats_button.focus()  # focuses on stats button when done
-
-
 
     def check_answer(self):
         # different praises
@@ -332,7 +324,7 @@ class Hard:
 
         # Enter key bind is focused on Next button and unfocused on OK button
         self.next_button.focus()
-        self.next_button.bind('<Return>', lambda e:self.generate_ques(history))
+        self.next_button.bind('<Return>', lambda e:self.generate_ques())
         self.next_button.config(state=NORMAL)# enabled, ready to move to next question
 
 
@@ -359,85 +351,6 @@ class Hard:
         # sets the feedback
         self.feedback.config(text=self.user_feedback)
         print(self.grade)
-
-
-    def to_stats(self, history, grade):
-        QuizStats(self, history, grade)
-
-
-class QuizStats:
-    def __init__(self, partner, history, grade):
-
-        print(history, grade)
-
-        # disable help button
-        partner.stats_button.config(state=DISABLED)
-
-        heading = "Arial 12 bold"
-        content = "Arial 12"
-
-        # Sets up child window (ie: help box)
-        self.stats_box = Toplevel()
-
-        # If users press cross at top, closes help and 'releases' help button
-        self.stats_box.protocol('WM_DELETE_WINDOW', partial(self.close_stats, partner))
-
-        # Set up GUI Frame
-        self.stats_frame = Frame(self.stats_box)
-        self.stats_frame.grid()
-
-        # Set up Help heading (row 0)
-        self.stats_heading_label = Label(self.stats_frame, text="Quiz Statistics",
-                                         font="arial 19 bold")
-        self.stats_heading_label.grid(row=0)
-
-        # To Export <instructions> (row 1)
-        self.export_instructions = Label(self.stats_frame,
-                                         text="Here are your Quiz Statistics. "
-                                              "Please use the Export button to "
-                                              "save all your results. ", wrap=250,
-                                         font="arial 10 ",justify=LEFT,
-                                         padx=10, pady=10)
-        self.export_instructions.grid(row=1)
-
-        # Starting Balance (row 2)
-        self.details_frame = Frame(self.stats_frame)
-        self.details_frame.grid(row=2)
-
-        # Grade
-        self.grade_label = Label(self.details_frame, text="You got {}/{}!".format(grade, history[0]),
-                                 wrap=250, font="arial 10",
-                                 padx=10, pady=10)
-        self.grade_label.grid(row=0)
-
-
-        # Export / Dismiss Button Frame (row 3)
-        self.export_dismiss_frame = Frame(self.stats_frame)
-        self.export_dismiss_frame.grid(row=3, pady=10)
-
-        # Export button
-        self.export_button = Button(self.export_dismiss_frame, text="Export",
-                                    font="Arial 12 bold") #,command=lambda: self.export(game_history, game_stats))
-        self.export_button.grid(row=0, column=0)
-
-        # Dismiss button
-        self.export_button = Button(self.export_dismiss_frame, text="Dismiss",
-                                    font="Arial 12 bold")#, command=partial(self.close_export, partner))
-        self.export_button.grid(row=0, column=1)
-
-    def close_stats(self, partner):
-        # Put help button back to normal...
-        partner.stats_button.config(state=NORMAL)
-        self.stats_box.destroy()
-
-    #def export(self, game_history, game_stats):
-    #   Export(self, game_history, game_stats)
-
-    # def close_export(self, partner):
-    #     # Put history button back to normal...
-    #     partner.stats_button.config(state=NORMAL)
-    #     self.stats_box.destroy()
-
 
 # main routine
 if __name__ == "__main__":
