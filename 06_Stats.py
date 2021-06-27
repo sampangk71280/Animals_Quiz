@@ -105,7 +105,7 @@ class Start:
             if self.starting_balance <= 0:
                 error_feedback = "Sorry you must enter a number higher than 0!"
             # more than 20 questions, breaks
-            elif self.starting_balance > 20:
+            elif self.starting_balance > 113:
                 error_feedback = "Too high! The maximum questions " \
                                  "you can answer is 20"
             # 1-20 questions, works
@@ -213,7 +213,7 @@ class Hard:
         self.grade = 0
         self.max_num = (starting_balance) # sets the maximum of questions asked
         history = [] # stores questions per round
-        #history.append(self.max_num) # sets max number as first thing in list
+        history.append(self.max_num) # sets max number as first thing in list
 
         # Main Frame
         self.hard_frame = Frame(padx=10, pady=10, bg=background_colour)
