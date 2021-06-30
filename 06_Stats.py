@@ -28,12 +28,12 @@ class Start:
         self.animal_quiz_label.grid(row=0)
 
         # Instructions (row 1)
-        self.animal_instructions = Label(self.start_frame, text="Welcome to the Animal Quiz! Choose "
-                                                                "whether you want to play hard to easy "
-                                                                "mode! Easy mode is multi-choice and in "
-                                                                "Hard mode you have to enter the full answers "
-                                                                "yourself. It is suggested to read the help/rules "
-                                                                "if this is your first time.",
+        self.animal_instructions = Label(self.start_frame, text="Welcome to Animal Quiz! This quiz "
+                                                                "will test your knowledge of baby animal terms. "
+                                                                "Please enter the amount of questions you would like "
+                                                                "to answer and don't forget to confirm! If this is your "
+                                                                "first time doing this quiz, please read the help/rules!"
+                                                                " Enjoy!",
                                          wrap=350, justify=LEFT, padx=10, pady=10, bg=background_colour)
         self.animal_instructions.grid(row=1)
 
@@ -131,9 +131,9 @@ class Start:
                                           "There are up to 20 questions you may "
                                           "choose to answer, with all the animals "
                                           "chosen at random. \n\n"
-                                          "In Hard mode, there is an option to receive "
-                                          "a hint for each question or to skip. "
-                                          "In Easy mode there are no hints or skip available. \n\n"
+                                          "Once you hit start, the quiz will start immediately. "
+                                          "You may use the enter key to use the buttons instead of "
+                                          "your mouse. \n\n"
                                           "When you are finished, you can view your Game Statistics "
                                           "which can be saved and exported into a text file.",
                                      padx=10)
@@ -212,8 +212,9 @@ class Hard:
         self.question_num = 0
         self.grade = 0
         self.max_num = (starting_balance) # sets the maximum of questions asked
+        max_num = self.max_num
         history = [] # stores questions per round
-        history.append(self.max_num) # sets max number as first thing in list
+        #history.append(self.max_num) # sets max number as first thing in list
 
         # Main Frame
         self.hard_frame = Frame(padx=10, pady=10, bg=background_colour)
@@ -270,7 +271,7 @@ class Hard:
         # Quiz Statistics Button (row 5)
         self.stats_button = Button(self.hard_frame, text="Quiz Statistics",
                                   bg=stats_bg, font=button_font, width=25,
-                                   command=lambda:self.to_stats(history, self.grade))
+                                   command=lambda:self.to_stats(history, self.grade, max_num))
         self.stats_button.grid(row=5, pady=10)
 
     # generates question every time the next/skip button is clicked
@@ -363,17 +364,18 @@ class Hard:
         print(self.grade)
 
 
-    def to_stats(self, history, grade):
-        QuizStats(self, history, grade)
+    def to_stats(self, history, grade, max_num):
+        QuizStats(self, history, grade, max_num)
 
 
 class QuizStats:
-    def __init__(self, partner, history, grade):
+    def __init__(self, partner, history, grade, max_num):
 
         # sets colours
         background_colour = "#EFEFEF"  # grey
         export_colour = "#AEACEA" # dark purple
         dismiss_colour = "#f29f9f" # light red
+
 
         print(history, grade)
 
@@ -412,7 +414,7 @@ class QuizStats:
         self.details_frame.grid(row=2)
 
         # Grade
-        self.grade_label = Label(self.details_frame, text="Well done! Your grade is {}/{}!".format(grade, history[0]),
+        self.grade_label = Label(self.details_frame, text="Well done! Your grade is {}/{}!".format(grade, max_num),
                                  wrap=250, font="arial 10", bg=background_colour,
                                  padx=10, pady=10)
         self.grade_label.grid(row=0)
