@@ -5,6 +5,7 @@ from functools import partial # to prevent unwanted windows
 import random
 import csv
 
+
 class Start:
     def __init__(self, parent):
 
@@ -214,7 +215,6 @@ class Hard:
         self.max_num = (starting_balance) # sets the maximum of questions asked
         max_num = self.max_num
         history = [] # stores questions per round
-        #history.append(self.max_num) # sets max number as first thing in list
 
         # Main Frame
         self.hard_frame = Frame(padx=10, pady=10, bg=background_colour)
@@ -321,7 +321,7 @@ class Hard:
             self.question_num_label.config(text="Question {}/{}".format(self.question_num-1, self.max_num)) # puts the question label at max
             self.ask_question.config(text="Well done! You have finished the quiz!") # tells user end of quiz
             self.stats_button.focus()  # focuses on stats button when done
-            self.stats_button.bind('<Return>', lambda e:self.to_stats(history,grade, self.max_num))
+            self.stats_button.bind('<Return>', lambda e:self.to_stats(history,grade, self.max_num)) # binds enter key
 
 
 
@@ -370,11 +370,16 @@ class Hard:
         QuizStats(self, history, grade, max_num)
 
 
+
 class QuizStats:
     def __init__(self, partner, history, grade, max_num):
 
+        # needs to move elsewhere, everytime the user checks, it removes a question
+        del history[-1]  # the next button generates a new question but the user doesn't see it so it gets removed from history
+
         # sets colours
         background_colour = "#EFEFEF"  # grey
+        show_all_bg = "#FFFEDA"
         export_colour = "#AEACEA" # dark purple
         dismiss_colour = "#f29f9f" # light red
 
@@ -386,6 +391,7 @@ class QuizStats:
 
         heading = "Arial 12 bold"
         content = "Arial 12"
+
 
         # Sets up child window (ie: help box)
         self.stats_box = Toplevel()
@@ -421,10 +427,19 @@ class QuizStats:
                                  padx=10, pady=10)
         self.grade_label.grid(row=0)
 
-        # # Answer sheet (row 3)
-        # self.answer_sheet = Label(self.stats_frame, text="", command=self.all_answer(history),
-        #                           font="arial 10", bg=background_colour)
-        # self.answer_sheet.grid(row=3)
+        # Answer Frame (row 3_
+        self.answer_frame = Frame(self.stats_frame, bg=show_all_bg, padx=10, pady=10)
+        self.answer_frame.grid(row=3)
+
+        # Show All Button
+        self.show_all_answers = Button(self.answer_frame, text="Show All", font="arial 10 bold", bg="#BFFBB9",
+                                       command=lambda:self.all_answer(history, max_num))
+        self.show_all_answers.grid(row=0)
+
+        # Label for all Answers
+        self.answer_sheet = Label(self.answer_frame, font="arial 10", bg=show_all_bg, justify=LEFT)
+        self.answer_sheet.grid(row=1)
+
 
         # Export / Dismiss Button Frame (row 4)
         self.export_dismiss_frame = Frame(self.stats_frame)
@@ -441,13 +456,22 @@ class QuizStats:
                                     bg=dismiss_colour)
         self.export_button.grid(row=0, column=1)
 
-    # def all_answer(self, history):
-    #
-    #     del history[-1]  # the next button generates a new question but the user doesn't see it so it gets removed from history
-    #
-    #     for item in history:
-    #         correct_answer="The baby term for {} is {}!".format(item[0], item[1])
-    #         print(correct_answer)
+    def all_answer(self, history,max_num):
+
+        answer_list = []
+
+        self.show_all_answers.config(state=DISABLED)
+
+        for item in history:
+
+            correct_answer="\n: The baby term for {} is {}!".format(item[0], item[1])
+            answer_list.append(correct_answer)
+
+
+        answer_list = ' '.join([str(item) for item in answer_list])
+        print(answer_list)
+
+        self.answer_sheet.config(text=answer_list)
 
 
 
