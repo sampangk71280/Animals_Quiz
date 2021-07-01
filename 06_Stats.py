@@ -316,12 +316,14 @@ class Hard:
 
         # disables generating a new question when the max number of questions has been reached
         if self.question_num > self.max_num:
+            self.confirm_button.config(state=DISABLED)
             self.next_button.config(state=DISABLED)
             self.skip_button.config(state=DISABLED)
             self.question_num_label.config(text="Question {}/{}".format(self.question_num-1, self.max_num)) # puts the question label at max
             self.ask_question.config(text="Well done! You have finished the quiz!") # tells user end of quiz
             self.stats_button.focus()  # focuses on stats button when done
             self.stats_button.bind('<Return>', lambda e:self.to_stats(history,grade, self.max_num)) # binds enter key
+
 
 
 
@@ -379,7 +381,6 @@ class QuizStats:
 
         # sets colours
         background_colour = "#EFEFEF"  # grey
-        show_all_bg = "#FFFEDA"
         export_colour = "#AEACEA" # dark purple
         dismiss_colour = "#f29f9f" # light red
 
@@ -388,9 +389,6 @@ class QuizStats:
 
         # disable help button
         partner.stats_button.config(state=DISABLED)
-
-        heading = "Arial 12 bold"
-        content = "Arial 12"
 
 
         # Sets up child window (ie: help box)
@@ -412,7 +410,7 @@ class QuizStats:
         self.export_instructions = Label(self.stats_frame,
                                          text="Here are your Quiz Statistics. "
                                               "Please use the Export button to "
-                                              "save all your results. ", wrap=250,
+                                              "save all your results. ", wrap=350,
                                          font="arial 10 ",justify=LEFT, bg=background_colour,
                                          padx=10, pady=10)
         self.export_instructions.grid(row=1)
@@ -428,16 +426,16 @@ class QuizStats:
         self.grade_label.grid(row=0)
 
         # Answer Frame (row 3_
-        self.answer_frame = Frame(self.stats_frame, bg=show_all_bg, padx=10, pady=10)
+        self.answer_frame = Frame(self.stats_frame, padx=10, pady=10)
         self.answer_frame.grid(row=3)
 
         # Show All Button
         self.show_all_answers = Button(self.answer_frame, text="Show All", font="arial 10 bold", bg="#BFFBB9",
-                                       command=lambda:self.all_answer(history, max_num))
+                                       command=lambda:self.all_answer(history))
         self.show_all_answers.grid(row=0)
 
         # Label for all Answers
-        self.answer_sheet = Label(self.answer_frame, font="arial 10", bg=show_all_bg, justify=LEFT)
+        self.answer_sheet = Label(self.answer_frame, font="arial 10", justify=LEFT)
         self.answer_sheet.grid(row=1)
 
 
@@ -456,22 +454,27 @@ class QuizStats:
                                     bg=dismiss_colour)
         self.export_button.grid(row=0, column=1)
 
-    def all_answer(self, history,max_num):
+    def all_answer(self, history):
 
+        # light yellow background
+        show_all_bg = "#FFFEDA"
+
+        # Master answer list
         answer_list = []
 
+        # disabled when clicked
         self.show_all_answers.config(state=DISABLED)
 
         for item in history:
-
+            # formats the output
             correct_answer="\nQuestion: What is the baby term for {}?\n Answer: {}\n".format(item[0], item[1])
-            answer_list.append(correct_answer)
+            answer_list.append(correct_answer) # puts into master list
 
-
+        # combines into a string
         answer_list = ' '.join([str(item) for item in answer_list])
         print(answer_list)
-
-        self.answer_sheet.config(text=answer_list)
+        # sets the text to master list
+        self.answer_sheet.config(text=answer_list, bg=show_all_bg)
 
 
 
