@@ -464,7 +464,7 @@ class QuizStats:
 
         for item in history:
 
-            correct_answer="\n: The baby term for {} is {}!".format(item[0], item[1])
+            correct_answer="\nQuestion: What is the baby term for {}?\n Answer: {}\n".format(item[0], item[1])
             answer_list.append(correct_answer)
 
 
