@@ -105,7 +105,7 @@ class Start:
             if self.starting_balance <= 0:
                 error_feedback = "Sorry you must enter a number higher than 0!"
             # more than 20 questions, breaks
-            elif self.starting_balance > 113:
+            elif self.starting_balance > 20:
                 error_feedback = "Too high! The maximum questions " \
                                  "you can answer is 20"
             # 1-20 questions, works
@@ -421,10 +421,14 @@ class QuizStats:
                                  padx=10, pady=10)
         self.grade_label.grid(row=0)
 
+        # # Answer sheet (row 3)
+        # self.answer_sheet = Label(self.stats_frame, text="", command=self.all_answer(history),
+        #                           font="arial 10", bg=background_colour)
+        # self.answer_sheet.grid(row=3)
 
-        # Export / Dismiss Button Frame (row 3)
+        # Export / Dismiss Button Frame (row 4)
         self.export_dismiss_frame = Frame(self.stats_frame)
-        self.export_dismiss_frame.grid(row=3, pady=10)
+        self.export_dismiss_frame.grid(row=4, pady=10)
 
         # Export button
         self.export_button = Button(self.export_dismiss_frame, text="Export",
@@ -436,6 +440,16 @@ class QuizStats:
                                     font="Arial 12 bold", command=partial(self.close_export, partner),
                                     bg=dismiss_colour)
         self.export_button.grid(row=0, column=1)
+
+    # def all_answer(self, history):
+    #
+    #     del history[-1]  # the next button generates a new question but the user doesn't see it so it gets removed from history
+    #
+    #     for item in history:
+    #         correct_answer="The baby term for {} is {}!".format(item[0], item[1])
+    #         print(correct_answer)
+
+
 
     def close_stats(self, partner):
         # Put help button back to normal...
