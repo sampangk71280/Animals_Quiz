@@ -277,6 +277,8 @@ class Hard:
     # generates question every time the next/skip button is clicked
     def generate_ques(self,history):
 
+        grade = self.grade
+
         question_list = random.choice(self.results)  # randomly chooses a row
 
         history.append(question_list) # puts question into history list
@@ -319,7 +321,7 @@ class Hard:
             self.question_num_label.config(text="Question {}/{}".format(self.question_num-1, self.max_num)) # puts the question label at max
             self.ask_question.config(text="Well done! You have finished the quiz!") # tells user end of quiz
             self.stats_button.focus()  # focuses on stats button when done
-            # self.stats_button.bind('<Return>', lambda e:self.to_stats(history,grade))
+            self.stats_button.bind('<Return>', lambda e:self.to_stats(history,grade, self.max_num))
 
 
 
