@@ -376,6 +376,7 @@ class Hard:
 class QuizStats:
     def __init__(self, partner, history, grade, max_num):
 
+
         # needs to move elsewhere, everytime the user checks, it removes a question
         del history[-1]  # the next button generates a new question but the user doesn't see it so it gets removed from history
 
@@ -410,7 +411,7 @@ class QuizStats:
         self.export_instructions = Label(self.stats_frame,
                                          text="Here are your Quiz Statistics. "
                                               "Please use the Export button to "
-                                              "save all your results. ", wrap=350,
+                                              "save all your results. ", wrap=300,
                                          font="arial 10 ",justify=LEFT, bg=background_colour,
                                          padx=10, pady=10)
         self.export_instructions.grid(row=1)
@@ -433,11 +434,19 @@ class QuizStats:
         self.show_all_answers = Button(self.answer_frame, text="Show All", font="arial 10 bold", bg="#BFFBB9",
                                        command=lambda:self.all_answer(history))
         self.show_all_answers.grid(row=0)
+        self.show_all_answers.focus()
+        self.show_all_answers.bind('<Return>', lambda e:self.all_answer(history)) # binds enter key to show all button
+
+        # # Hide Button
+        # self.hide_button = Button(self.answer_frame, text="Hide", font="arial 10 bold", bg=dismiss_colour,
+        #                           command=lambda e:self.hide(history))
+        # self.hide_button.grid(row=0, column=1)
+        # self.hide_button.config(state=DISABLED)
+
 
         # Label for all Answers
         self.answer_sheet = Label(self.answer_frame, font="arial 10", justify=LEFT)
         self.answer_sheet.grid(row=1)
-
 
         # Export / Dismiss Button Frame (row 4)
         self.export_dismiss_frame = Frame(self.stats_frame)
@@ -464,19 +473,28 @@ class QuizStats:
 
         # disabled when clicked
         self.show_all_answers.config(state=DISABLED)
+        # self.hide_button.config(state=NORMAL)
+        # self.hide_button.focus()
+        # self.hide_button.bind('<Return>', lambda e:self.hide(history))
 
         for item in history:
             # formats the output
-            correct_answer="\nQuestion: What is the baby term for {}?\n Answer: {}\n".format(item[0], item[1])
+            correct_answer="\nAdult: {}, Baby: {}\n".format(item[0], item[1])
             answer_list.append(correct_answer) # puts into master list
 
         # combines into a string
         answer_list = ' '.join([str(item) for item in answer_list])
         print(answer_list)
+
         # sets the text to master list
         self.answer_sheet.config(text=answer_list, bg=show_all_bg)
-
-
+    #
+    # def hide(self,history):
+    #     self.answer_sheet.config(text="") # hides the answers
+    #     self.hide_button.config(state=DISABLED) # disables hide button when enabled
+    #     self.show_all_answers.config(state=NORMAL) # enables show all button again
+    #     self.show_all_answers.focus()
+    #     self.show_all_answers.bind('<Return>', lambda e: self.all_answer(history))  # binds enter key to show all button
 
     def close_stats(self, partner):
         # Put help button back to normal...
