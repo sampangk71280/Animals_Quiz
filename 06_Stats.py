@@ -471,6 +471,8 @@ class QuizStats:
         # Master answer list
         answer_list = []
 
+        question_num = 1 # formatting
+
         # disabled when clicked
         self.show_all_answers.config(state=DISABLED)
         # self.hide_button.config(state=NORMAL)
@@ -479,8 +481,9 @@ class QuizStats:
 
         for item in history:
             # formats the output
-            correct_answer="\nAdult: {}, Baby: {}\n".format(item[0], item[1])
+            correct_answer="\nQuestion: {}: {}, {}\n".format(question_num,item[0], item[1])
             answer_list.append(correct_answer) # puts into master list
+            question_num += 1
 
         # combines into a string
         answer_list = ' '.join([str(item) for item in answer_list])
@@ -488,7 +491,7 @@ class QuizStats:
 
         # sets the text to master list
         self.answer_sheet.config(text=answer_list, bg=show_all_bg)
-    #
+
     # def hide(self,history):
     #     self.answer_sheet.config(text="") # hides the answers
     #     self.hide_button.config(state=DISABLED) # disables hide button when enabled
