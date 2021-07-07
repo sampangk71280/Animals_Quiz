@@ -376,6 +376,8 @@ class Hard:
 class QuizStats:
     def __init__(self, partner, history, grade, max_num):
 
+        print(history)
+
 
         # needs to move elsewhere, everytime the user checks, it removes a question
         del history[-1]  # the next button generates a new question but the user doesn't see it so it gets removed from history
@@ -384,6 +386,7 @@ class QuizStats:
         background_colour = "#EFEFEF"  # grey
         export_colour = "#AEACEA" # dark purple
         dismiss_colour = "#f29f9f" # light red
+        font = "arial 10"
 
 
         print(history, grade)
@@ -421,32 +424,42 @@ class QuizStats:
         self.details_frame.grid(row=2)
 
         # Grade
-        self.grade_label = Label(self.details_frame, text="Well done! Your grade is {}/{}!".format(grade, max_num),
-                                 wrap=250, font="arial 10", bg=background_colour,
-                                 padx=10, pady=10)
-        self.grade_label.grid(row=0)
+        grade_text = "Grade: {}/{}".format(grade, max_num)
+        self.grade = Label(self.details_frame, bg=background_colour,
+                           font=font, text=grade_text)
+        self.grade.grid(row=0)
 
-        # Answer Frame (row 3_
-        self.answer_frame = Frame(self.stats_frame, padx=10, pady=10)
-        self.answer_frame.grid(row=3)
-
-        # Show All Button
-        self.show_all_answers = Button(self.answer_frame, text="Show All", font="arial 10 bold", bg="#BFFBB9",
-                                       command=lambda:self.all_answer(history))
-        self.show_all_answers.grid(row=0)
-        self.show_all_answers.focus()
-        self.show_all_answers.bind('<Return>', lambda e:self.all_answer(history)) # binds enter key to show all button
-
-        # # Hide Button
-        # self.hide_button = Button(self.answer_frame, text="Hide", font="arial 10 bold", bg=dismiss_colour,
-        #                           command=lambda e:self.hide(history))
-        # self.hide_button.grid(row=0, column=1)
-        # self.hide_button.config(state=DISABLED)
+        # Percentage
+        percent = grade / max_num * 100
+        self.percent = Label(self.details_frame, bg=background_colour,
+                             font=font, text="Percentage: {:.0f}%".format(percent))
+        self.percent.grid(row=1)
 
 
-        # Label for all Answers
-        self.answer_sheet = Label(self.answer_frame, font="arial 10", justify=LEFT)
-        self.answer_sheet.grid(row=1)
+        # Grading System
+        grading_system = "Grading: \nA+ = 100% \nA = 90-99% \nB = 75-89% \nC = 60-74%\n" \
+                         "F = 0-59%"
+        self.grading_system = Label(self.details_frame, bg=background_colour,
+                                    font=font, text=grading_system)
+        self.grading_system.grid(row=2)
+
+        # Final Grade
+        if percent == 100:
+            grade_percent = "A+"
+        elif 89 < percent < 100:
+            grade_percent = "A"
+        elif 75 < percent < 90 or percent:
+            grade_percent = "B"
+        elif 64 < percent < 75:
+            grade_percent = "C"
+        else:
+            grade_percent = "F"
+
+        final_grade = "Your final grade is {}".format(grade_percent)
+        self.final_grade = Label(self.details_frame, bg=background_colour,
+                                 font=font, text=final_grade)
+        self.final_grade.grid(row=3)
+
 
         # Export / Dismiss Button Frame (row 4)
         self.export_dismiss_frame = Frame(self.stats_frame)
@@ -454,7 +467,7 @@ class QuizStats:
 
         # Export button
         self.export_button = Button(self.export_dismiss_frame, text="Export",
-                                    font="Arial 12 bold", bg=export_colour) #,command=lambda: self.export())
+                                    font="Arial 12 bold", bg=export_colour) #,command=lambda: self.export(game_history, game_stats))
         self.export_button.grid(row=0, column=0)
 
         # Dismiss button
@@ -463,184 +476,45 @@ class QuizStats:
                                     bg=dismiss_colour)
         self.export_button.grid(row=0, column=1)
 
-    def all_answer(self, history):
-
-        # light yellow background
-        show_all_bg = "#FFFEDA"
-
-        # Master answer list
-        answer_list = []
-
-        # disabled when clicked
-        self.show_all_answers.config(state=DISABLED)
-        # self.hide_button.config(state=NORMAL)
-        # self.hide_button.focus()
-        # self.hide_button.bind('<Return>', lambda e:self.hide(history))
-
-        for item in history:
-            # formats the output
-            correct_answer="\nAdult: {}, Baby: {}\n".format(item[0], item[1])
-            answer_list.append(correct_answer) # puts into master list
-
-        # combines into a string
-        answer_list = ' '.join([str(item) for item in answer_list])
-        print(answer_list)
-
-        # sets the text to master list
-        self.answer_sheet.config(text=answer_list, bg=show_all_bg)
-    #
-    # def hide(self,history):
-    #     self.answer_sheet.config(text="") # hides the answers
-    #     self.hide_button.config(state=DISABLED) # disables hide button when enabled
-    #     self.show_all_answers.config(state=NORMAL) # enables show all button again
-    #     self.show_all_answers.focus()
-    #     self.show_all_answers.bind('<Return>', lambda e: self.all_answer(history))  # binds enter key to show all button
 
     def close_stats(self, partner):
         # Put help button back to normal...
         partner.stats_button.config(state=NORMAL)
         self.stats_box.destroy()
 
-    def export(self, history, grade):
-      Export(self, history, grade)
+    #def export(self, game_history, game_stats):
+    #   Export(self, game_history, game_stats)
 
     def close_export(self, partner):
         # Put history button back to normal...
         partner.stats_button.config(state=NORMAL)
         self.stats_box.destroy()
 
-class Export:
-    def __init__(self, partner, history, grade, max_num):
+    """    USE FOR EXPORT !
+            def all_answer(self, history):
 
-        print(round)
-        background = "#F6D89E"  # change
+            # light yellow background
+            show_all_bg = "#FFFEDA"
 
-        # disable export button
-        partner.export_button.config(state=DISABLED)
+            # Master answer list
+            answer_list = []
 
-        # Sets up child window (ie: export box)
-        self.export_box = Toplevel()
+            question_num = 1 # formatting
 
-        # If users press cross at top, closes export and 'releases' export button
-        self.export_box.protocol('WM_DELETE_WINDOW', partial(self.close_export, partner))
 
-        # Set up GUI Frame
-        self.export_frame = Frame(self.export_box, bg=background)
-        self.export_frame.grid()
-
-        # Set up Export heading (row 0)
-        self.how_heading = Label(self.export_frame, text="Export / Instructions",
-                                 font="arial 10 bold", bg=background)
-        self.how_heading.grid(row=0)
-
-        # Export text (label, row 1)
-        self.export_text = Label(self.export_frame, text="Enter a filename in the "
-                                                         "box below and press the "
-                                                         "Save button to save your "
-                                                         "calculation history to "
-                                                         "text file",
-                                 justify=LEFT, width=40, bg=background, wrap=250)
-        self.export_text.grid(row=1)
-
-        # Warning text (label, row 2)
-        self.export_text = Label(self.export_frame, text="If the filename you "
-                                                         "enter below already "
-                                                         "exists, its contents "
-                                                         "will be replaced with "
-                                                         "your calculation history.",
-                                 justify=LEFT, bg="#ffafaf", fg="maroon",
-                                 font="Arial 10 italic", wrap=225, padx=10, pady=10)
-        self.export_text.grid(row=2, pady=10)
-
-        # Filename Entry Box (row 3)
-        self.filename_entry = Entry(self.export_frame, width=20,
-                                    font="Arial 14 bold", justify=CENTER)
-        self.filename_entry.grid(row=3, pady=10)
-
-        # Error message labels (initially blank, row 4)
-        self.save_error_label = Label(self.export_frame, text="", fg="maroon",
-                                      bg=background)
-        self.save_error_label.grid(row=4)
-
-        # Save / Cancel Frame (row 5)
-        self.save_cancel_frame = Frame(self.export_frame)
-        self.save_cancel_frame.grid(row=5, pady=10)
-
-        # Save and Cancel Buttons (row 0 of save_cancel_frame)
-        self.save_button = Button(self.save_cancel_frame, text="Save", font="Arial 12 bold",
-                                  command=partial(lambda: self.save_history(partner, history, all_game_stats)))
-        self.save_button.grid(row=0, column=0)
-
-        self.cancel_button = Button(self.save_cancel_frame, text="Cancel", font="Arial 12 bold",
-                                    command=partial(self.close_export, partner))
-        self.cancel_button.grid(row=0, column=1)
-
-    def close_export(self, partner):
-        # Put export button back to normal...
-        partner.export_button.config(state=NORMAL)
-        self.export_box.destroy()
-
-    def save_history(self, partner, history, game_stats):
-
-        has_error = "no"
-        # regular expression to check filename is valid
-        valid_char = "[A-Za-z0-9_]"
-
-        filename = self.filename_entry.get()
-
-        for letter in filename:
-            if re.match(valid_char, letter):
-                continue
-
-            elif letter == " ":
-                problem = "(no spaces allowed)"
-                has_error = "yes"
-
-            else:
-                problem = ("(no {}'s allowed)".format(letter))
-                has_error = "yes"
-            break
-
-        if filename == "":
-            problem = "can't be blank"
-            has_error = "yes"
-
-        if has_error == "yes":
-            # Display error message
-            self.save_error_label.config(text="Invalid filename - {}".format(problem))
-            # change entry box background to pink
-            self.filename_entry.config(bg="#ffafaf")
-            print()
-
-        else:
-            # if there are no errors, generate text tile and then close dialouguue
-            # add .txt suffix
-            filename = filename + ".txt"
-
-            # create file to hold data
-            f = open(filename, "w+")
-
-            f.write("Game Statistics\n\n")
-
-            # Game stats
-            for round in game_stats:
-                # f.write(round + "\n")
-                rounds_text = "{} \n".format(round)
-                f.write(rounds_text)
-
-            # Heading for rounds
-            f.write("\nRound Details\n\n")
-
-            # add new line at end of each item
             for item in history:
-                f.write(item + "\n")
+                # formats the output
+                correct_answer="\nQuestion: {}: {}, {}\n".format(question_num,item[0], item[1])
+                answer_list.append(correct_answer) # puts into master list
+                question_num += 1
 
-            # close file
-            f.close()
+            # combines into a string
+            answer_list = ' '.join([str(item) for item in answer_list])
+            print(answer_list)
 
-            # close dialogue
-            self.close_export(partner)
-
+            # sets the text to master list
+            self.answer_sheet.config(text=answer_list, bg=show_all_bg)
+    """
 
 # main routine
 if __name__ == "__main__":
