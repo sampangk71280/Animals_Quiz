@@ -215,7 +215,6 @@ class Hard:
         self.max_num = (starting_balance) # sets the maximum of questions asked
         max_num = self.max_num
         history = [] # stores questions per round
-        all_user_answers = []  # contains answers user had inputted
 
         # Main Frame
         self.hard_frame = Frame(padx=10, pady=10, bg=background_colour)
@@ -238,7 +237,7 @@ class Hard:
         self.answer_entry = Entry(self.entry_frame, font="Arial 16 bold")
         # Binds enter key to command button
         self.answer_entry.focus()
-        self.answer_entry.bind('<Return>', lambda e: self.check_answer(history, all_user_answers))
+        self.answer_entry.bind('<Return>', lambda e: self.check_answer(history))
         self.answer_entry.grid(row=0, column=0)
 
         # Answer Confirm button
@@ -257,26 +256,26 @@ class Hard:
 
         # Skip Button
         self.skip_button = Button(self.button_frame, font=button_font,
-                                  text="Skip", bg=skip_bg, command=lambda:self.generate_ques(history, all_user_answers))
+                                  text="Skip", bg=skip_bg, command=lambda:self.generate_ques(history))
         self.skip_button.grid(row=0, column=0, padx=5, pady=10)
 
         # Next Button
         self.next_button = Button(self.button_frame, font=button_font,
-                                  text="Next", bg=next_bg, command=lambda:self.generate_ques(history,all_user_answers))
+                                  text="Next", bg=next_bg, command=lambda:self.generate_ques(history))
         self.next_button.grid(row=0, column=1, padx=5, pady=10)
 
         # First Question Label
         # automatically generates the first question
-        self.first = Label(self.button_frame, command=self.generate_ques(history,all_user_answers))
+        self.first = Label(self.button_frame, command=self.generate_ques(history))
 
         # Quiz Statistics Button (row 5)
         self.stats_button = Button(self.hard_frame, text="Quiz Statistics",
                                   bg=stats_bg, font=button_font, width=25,
-                                   command=lambda:self.to_stats(history, self.grade, max_num,all_user_answers))
+                                   command=lambda:self.to_stats(history, self.grade, max_num))
         self.stats_button.grid(row=5, pady=10)
 
     # generates question every time the next/skip button is clicked
-    def generate_ques(self,history,all_user_answers):
+    def generate_ques(self,history,):
 
         grade = self.grade
 
@@ -298,7 +297,7 @@ class Hard:
 
         # binds enter key to OK button
         self.confirm_button.focus()
-        self.confirm_button.bind('<Return>', lambda e:self.check_answer(all_user_answers))
+        self.confirm_button.bind('<Return>', lambda e:self.check_answer)
 
         # adds one to the question number
         self.question_num += 1
@@ -325,10 +324,10 @@ class Hard:
             self.question_num_label.config(text="Question {}/{}".format(self.question_num-1, self.max_num)) # puts the question label at max
             self.ask_question.config(text="Well done! You have finished the quiz!") # tells user end of quiz
             self.stats_button.focus()  # focuses on stats button when done
-            self.stats_button.bind('<Return>', lambda e:self.to_stats(history,grade, self.max_num, all_user_answers)) # binds enter key
+            self.stats_button.bind('<Return>', lambda e:self.to_stats(history,grade, self.max_num)) # binds enter key
 
 
-    def check_answer(self,history, all_user_answers):
+    def check_answer(self,history):
         # different praises
         praise_list = ["Good job!", "Well done!", "Amazing!", "You did well!",
                        "Fantastic!", "Terrific!"]
@@ -340,7 +339,7 @@ class Hard:
 
         # Enter key bind is focused on Next button and unfocused on OK button
         self.next_button.focus()
-        self.next_button.bind('<Return>', lambda e:self.generate_ques(history,all_user_answers))
+        self.next_button.bind('<Return>', lambda e:self.generate_ques(history))
         self.next_button.config(state=NORMAL)# enabled, ready to move to next question
 
 
@@ -369,16 +368,13 @@ class Hard:
         self.feedback.config(text=self.user_feedback)
         print(self.grade)
 
-        all_user_answers.append(self.user_answer)
-        print(all_user_answers)
 
-
-    def to_stats(self, history, grade, max_num, all_user_answers):
-        QuizStats(self, history, grade, max_num, all_user_answers)
+    def to_stats(self, history, grade, max_num):
+        QuizStats(self, history, grade, max_num)
 
 
 class QuizStats:
-    def __init__(self, partner, history, grade, max_num, all_user_answers):
+    def __init__(self, partner, history, grade, max_num):
 
         print(history)
         # needs to move elsewhere, everytime the user checks, it removes a question
@@ -468,10 +464,10 @@ class QuizStats:
         # Export button
         self.export_button = Button(self.export_dismiss_frame, text="Export",
                                     font="Arial 12 bold", bg=export_colour,
-                                    command=lambda: self.export(history, grade, max_num, all_user_answers))
+                                    command=lambda: self.export(history))
         self.export_button.grid(row=0, column=0)
         self.export_button.focus()
-        self.export_button.bind('<Return>', lambda e: self.export(history, grade, max_num, all_user_answers))
+        self.export_button.bind('<Return>', lambda e: self.export(history))
 
         # Dismiss button
         self.export_button = Button(self.export_dismiss_frame, text="Dismiss",
@@ -485,8 +481,8 @@ class QuizStats:
         partner.stats_button.config(state=NORMAL)
         self.stats_box.destroy()
 
-    def export(self, history, grade, max_num, all_user_answers):
-       Export(self, history, grade, max_num, all_user_answers )
+    def export(self, history):
+       Export(self, history)
 
     def close_export(self, partner):
         # Put history button back to normal...
@@ -496,7 +492,7 @@ class QuizStats:
 
 # Taken from Mystery Box and edited to fit Quiz
 class Export:
-    def __init__(self, partner, history, grade, max_num, all_user_answers):
+    def __init__(self, partner, history,):
 
         print(round)
         background = "#F6D89E"  # change
@@ -555,7 +551,7 @@ class Export:
 
         # Save and Cancel Buttons (row 0 of save_cancel_frame)
         self.save_button = Button(self.save_cancel_frame, text="Save", font="Arial 12 bold",
-                                  command=partial(lambda: self.save_history(partner, history, all_user_answers)))
+                                  command=partial(lambda: self.save_history(partner, history)))
         self.save_button.grid(row=0, column=0)
 
         self.cancel_button = Button(self.save_cancel_frame, text="Cancel", font="Arial 12 bold",
@@ -567,7 +563,7 @@ class Export:
         partner.export_button.config(state=NORMAL)
         self.export_box.destroy()
 
-    def save_history(self, partner, history, all_user_answers):
+    def save_history(self, partner, history):
 
         has_error = "no"
         # regular expression to check filename is valid
@@ -614,7 +610,6 @@ class Export:
             f.write("Quiz History\n\n")
 
 
-
             # Question History
             for item in history:
                 # formats the output
@@ -622,19 +617,11 @@ class Export:
                 question_list.append(correct_answer)  # puts into master list
                 question_num += 1
 
-            # User Answer History
-            for item in all_user_answers:
-                user_answer = "\nYou answered {}".format(item)
-                answer_list.append(user_answer)
-
-
             print(question_list)
-
 
             # Turns question list into a string
             question_list = ' '.join([str(item) for item in question_list])
             f.write(question_list)
-
 
             # close file
             f.close()
