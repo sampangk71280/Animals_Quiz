@@ -316,9 +316,11 @@ class Hard:
 
         # disables generating a new question when the max number of questions has been reached
         if self.question_num > self.max_num:
+            # disables confirm, next, skip buttons, and entry box
             self.confirm_button.config(state=DISABLED)
             self.next_button.config(state=DISABLED)
             self.skip_button.config(state=DISABLED)
+            self.answer_entry.config(state=DISABLED)
             self.question_num_label.config(text="Question {}/{}".format(self.question_num-1, self.max_num)) # puts the question label at max
             self.ask_question.config(text="Well done! You have finished the quiz!") # tells user end of quiz
             self.stats_button.focus()  # focuses on stats button when done
@@ -368,7 +370,6 @@ class Hard:
 
     def to_stats(self, history, grade, max_num):
         QuizStats(self, history, grade, max_num)
-
 
 
 class QuizStats:
@@ -609,8 +610,7 @@ class Export:
             # Question History
             for item in history:
                 # formats the output
-                correct_answer = "\nQuestion {}: What is the baby term for {}? {}\n" \
-                                 "You answered: {}".format(question_num, item[0], item[1], item[2])
+                correct_answer = "\nQuestion {}: What is the baby term for {}? {}\n".format(question_num, item[0], item[1])
                 question_list.append(correct_answer)  # puts into master list
                 question_num += 1
 
