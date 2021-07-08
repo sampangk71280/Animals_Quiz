@@ -1,4 +1,4 @@
-# Statistics GUI (component 6) for Animals Quiz
+# Assembled Quiz
 
 from tkinter import *
 from functools import partial # to prevent unwanted windows
@@ -325,8 +325,6 @@ class Hard:
             self.stats_button.bind('<Return>', lambda e:self.to_stats(history,grade, self.max_num)) # binds enter key
 
 
-
-
     def check_answer(self,history):
         # different praises
         praise_list = ["Good job!", "Well done!", "Amazing!", "You did well!",
@@ -445,7 +443,7 @@ class QuizStats:
             grade_percent = "A+"
         elif 89 < percent < 100:
             grade_percent = "A"
-        elif 75 < percent < 90 or percent:
+        elif 75 < percent < 90:
             grade_percent = "B"
         elif 64 < percent < 75:
             grade_percent = "C"
@@ -539,6 +537,7 @@ class Export:
         self.filename_entry = Entry(self.export_frame, width=20,
                                     font="Arial 14 bold", justify=CENTER)
         self.filename_entry.grid(row=3, pady=10)
+        self.filename_entry.focus()
 
         # Error message labels (initially blank, row 4)
         self.save_error_label = Label(self.export_frame, text="", fg="maroon",
@@ -553,8 +552,6 @@ class Export:
         self.save_button = Button(self.save_cancel_frame, text="Save", font="Arial 12 bold",
                                   command=partial(lambda: self.save_history(partner, history)))
         self.save_button.grid(row=0, column=0)
-        self.save_button.focus()
-        self.save_button.bind(('<Return>', lambda e: self.save_history(partner, history)))
 
         self.cancel_button = Button(self.save_cancel_frame, text="Cancel", font="Arial 12 bold",
                                     command=partial(self.close_export, partner))
@@ -613,7 +610,8 @@ class Export:
             # Question History
             for item in history:
                 # formats the output
-                correct_answer = "\nQuestion {}: What is the baby term for {}? {}\n".format(question_num, item[0], item[1])
+                correct_answer = "\nQuestion {}: What is the baby term for {}? {}\n" \
+                                 "You answered: {}".format(question_num, item[0], item[1], item[2])
                 question_list.append(correct_answer)  # puts into master list
                 question_num += 1
 

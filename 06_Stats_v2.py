@@ -457,7 +457,7 @@ class QuizStats:
 
         final_grade = "Your final grade is {}".format(grade_percent)
         self.final_grade = Label(self.details_frame, bg=background_colour,
-                                 font=font, text=final_grade)
+                                 font="arial 10 bold", text=final_grade, fg="#0D77C2")
         self.final_grade.grid(row=3)
 
 
