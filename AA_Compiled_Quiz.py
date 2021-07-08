@@ -384,7 +384,6 @@ class QuizStats:
         dismiss_colour = "#f29f9f" # light red
         font = "arial 10"
 
-        print(history, grade)
 
         # disable help button
         partner.stats_button.config(state=DISABLED)
