@@ -377,8 +377,6 @@ class QuizStats:
     def __init__(self, partner, history, grade, max_num):
 
         print(history)
-        # needs to move elsewhere, everytime the user checks, it removes a question
-        del history[-1]  # the next button generates a new question but the user doesn't see it so it gets removed from history
 
         # sets colours
         background_colour = "#EFEFEF"  # grey
@@ -492,7 +490,10 @@ class QuizStats:
 
 # Taken from Mystery Box and edited to fit Quiz
 class Export:
-    def __init__(self, partner, history,):
+    def __init__(self, partner, history):
+
+        
+        del history[-1]  # the next button generates a new question but the user doesn't see it so it gets removed from history
 
         print(round)
         background = "#F6D89E"  # change
