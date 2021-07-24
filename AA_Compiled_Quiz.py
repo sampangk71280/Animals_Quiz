@@ -115,7 +115,7 @@ class Start:
                 error_feedback = "" # removes previous error message
                 # allows user to hit enter key to start
                 self.hard_button.focus()
-                self.hard_button.bind('<Return>', lambda e: self.to_hard())
+                self.hard_button.bind('<Return>', lambda e: self.to_hard)
 
         except ValueError:
             error_feedback = "Please enter an integer (no text / decimals)"
@@ -242,7 +242,7 @@ class Hard:
 
         # Answer Confirm button
         self.confirm_button = Button(self.entry_frame, font=button_font,
-                                     text="OK", bg=next_bg, command=self.check_answer)
+                                     text="OK", bg=next_bg, command=self.check_answer(history))
         self.confirm_button.grid(row=0, column=1)
 
 
@@ -331,7 +331,6 @@ class Hard:
         # different praises
         praise_list = ["Good job!", "Well done!", "Amazing!", "You did well!",
                        "Fantastic!", "Terrific!"]
-
 
         # takes the answer
         self.user_answer = self.answer_entry.get()
@@ -462,10 +461,10 @@ class QuizStats:
         # Export button
         self.export_button = Button(self.export_dismiss_frame, text="Export",
                                     font="Arial 12 bold", bg=export_colour,
-                                    command=lambda: self.export(history))
+                                    command=lambda: self.export(history, final_grade))
         self.export_button.grid(row=0, column=0)
         self.export_button.focus()
-        self.export_button.bind('<Return>', lambda e: self.export(history))
+        self.export_button.bind('<Return>', lambda e: self.export(history, final_grade))
 
         # Dismiss button
         self.export_button = Button(self.export_dismiss_frame, text="Dismiss",
@@ -479,8 +478,8 @@ class QuizStats:
         partner.stats_button.config(state=NORMAL)
         self.stats_box.destroy()
 
-    def export(self, history):
-       Export(self, history)
+    def export(self, history, final_grade):
+       Export(self, history, final_grade)
 
     def close_export(self, partner):
         # Put history button back to normal...
@@ -490,9 +489,8 @@ class QuizStats:
 
 # Taken from Mystery Box and edited to fit Quiz
 class Export:
-    def __init__(self, partner, history):
+    def __init__(self, partner, history, final_grade):
 
-        
         del history[-1]  # the next button generates a new question but the user doesn't see it so it gets removed from history
 
         print(round)
@@ -552,7 +550,7 @@ class Export:
 
         # Save and Cancel Buttons (row 0 of save_cancel_frame)
         self.save_button = Button(self.save_cancel_frame, text="Save", font="Arial 12 bold",
-                                  command=partial(lambda: self.save_history(partner, history)))
+                                  command=partial(lambda: self.save_history(partner, history, final_grade)))
         self.save_button.grid(row=0, column=0)
 
         self.cancel_button = Button(self.save_cancel_frame, text="Cancel", font="Arial 12 bold",
@@ -564,7 +562,7 @@ class Export:
         partner.export_button.config(state=NORMAL)
         self.export_box.destroy()
 
-    def save_history(self, partner, history):
+    def save_history(self, partner, history, final_grade):
 
         has_error = "no"
         # regular expression to check filename is valid
@@ -608,7 +606,8 @@ class Export:
             answer_list = []
             question_num = 1 # used for formatting questions
 
-            f.write("Quiz History\n\n")
+            f.write("***** Quiz History *****\n\n")
+
 
 
             # Question History
@@ -623,6 +622,10 @@ class Export:
             # Turns question list into a string
             question_list = ' '.join([str(item) for item in question_list])
             f.write(question_list)
+
+            # final grade added at the bottom of quiz history
+            f.write("\n{}".format(final_grade))
+
 
             # close file
             f.close()
