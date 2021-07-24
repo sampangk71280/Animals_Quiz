@@ -1,7 +1,8 @@
 # Assembled Quiz
 
+# Imports
 from tkinter import *
-from functools import partial # to prevent unwanted windows
+from functools import partial
 import random
 import csv
 
@@ -48,14 +49,13 @@ class Start:
         self.entry_error_frame = Frame(self.start_frame, bg=background_colour)
         self.entry_error_frame.grid(row=3)
 
-        # Entry box
+        # Entry box (row 3.0)
         self.question_entry = Entry(self.entry_error_frame, font="Arial 16 bold")
         self.question_entry.grid(row=0, column=0)
-
         self.question_entry.focus()
         self.question_entry.bind('<Return>', lambda e: self.int_check())
 
-        # Question button
+        # Question button (row 3.1)
         self.confirm_button = Button(self.entry_error_frame, font="Arial 12 bold",
                                      text="Confirm",command=self.int_check)
         self.confirm_button.focus()
@@ -73,7 +73,7 @@ class Start:
         self.button_frame.grid(row=4)
 
         # Difficulty Button
-        # Hard button
+        # Start Button (used to be Hard Button)
         self.hard_button = Button(self.button_frame, text="Start",  # renamed to start after easy mode removed
                                   command=self.to_hard,
                                   font=button_font, bg=hard_bg, width=7)
@@ -115,7 +115,7 @@ class Start:
                 error_feedback = "" # removes previous error message
                 # allows user to hit enter key to start
                 self.hard_button.focus()
-                self.hard_button.bind('<Return>', lambda e: self.to_hard)
+                self.hard_button.bind('<Return>', lambda e: self.to_hard())
 
         except ValueError:
             error_feedback = "Please enter an integer (no text / decimals)"
@@ -123,7 +123,6 @@ class Start:
         if has_errors == "yes":
             self.question_error_label.config(text=error_feedback) # shows error message
 
-        print(self.starting_balance)
 
     def help(self):
         get_help = Help(self)
@@ -138,7 +137,6 @@ class Start:
                                           "When you are finished, you can view your Game Statistics "
                                           "which can be saved and exported into a text file.",
                                      padx=10)
-
 
     def to_hard(self):
         # retrieve starting balance
@@ -243,6 +241,7 @@ class Hard:
         # Answer Confirm button
         self.confirm_button = Button(self.entry_frame, font=button_font,
                                      text="OK", bg=next_bg, command=self.check_answer(history))
+
         self.confirm_button.grid(row=0, column=1)
 
 
@@ -331,6 +330,7 @@ class Hard:
         # different praises
         praise_list = ["Good job!", "Well done!", "Amazing!", "You did well!",
                        "Fantastic!", "Terrific!"]
+
 
         # takes the answer
         self.user_answer = self.answer_entry.get()
@@ -441,9 +441,9 @@ class QuizStats:
             grade_percent = "A+"
         elif 89 < percent < 100:
             grade_percent = "A"
-        elif 75 < percent < 90:
+        elif 74 < percent < 90:
             grade_percent = "B"
-        elif 64 < percent < 75:
+        elif 59 < percent < 75:
             grade_percent = "C"
         else:
             grade_percent = "F"
