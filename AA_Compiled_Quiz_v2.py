@@ -235,12 +235,12 @@ class Hard:
         self.answer_entry = Entry(self.entry_frame, font="Arial 16 bold")
         # Binds enter key to command button
         self.answer_entry.focus()
-        self.answer_entry.bind('<Return>', lambda e: self.check_answer())
+        self.answer_entry.bind('<Return>', lambda e: self.check_answer(history))
         self.answer_entry.grid(row=0, column=0)
 
         # Answer Confirm button
         self.confirm_button = Button(self.entry_frame, font=button_font,
-                                     text="OK", bg=next_bg, command=self.check_answer())
+                                     text="OK", bg=next_bg, command= lambda: self.check_answer(history))
         self.confirm_button.grid(row=0, column=1)
 
 
@@ -338,8 +338,6 @@ class Hard:
         self.next_button.focus()
         self.next_button.bind('<Return>', lambda e:self.generate_ques(history))
         self.next_button.config(state=NORMAL)# enabled, ready to move to next question
-
-        root.focus()
 
 
         # if answer is correct
