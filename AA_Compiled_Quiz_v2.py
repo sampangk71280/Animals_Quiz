@@ -285,7 +285,6 @@ class Hard:
         self.answer = question_list[1]  # baby animal term
 
 
-        print(self.question, self.answer)  # prints out answers for testing purposes
 
         # formats the question to the text
         self.ask = ("What is the baby term for {}?".format(self.question))
@@ -363,7 +362,6 @@ class Hard:
 
         # sets the feedback
         self.feedback.config(text=self.user_feedback)
-        print(self.grade)
 
 
     def to_stats(self, history, grade, max_num):
@@ -373,7 +371,6 @@ class Hard:
 class QuizStats:
     def __init__(self, partner, history, grade, max_num):
 
-        print(history)
 
         # sets colours
         background_colour = "#EFEFEF"  # grey
@@ -491,7 +488,6 @@ class Export:
 
         del history[-1]  # the next button generates a new question but the user doesn't see it so it gets removed from history
 
-        print(round)
         background = "#F6D89E"  # change
 
         # disable export button
@@ -590,7 +586,6 @@ class Export:
             self.save_error_label.config(text="Invalid filename - {}".format(problem))
             # change entry box background to pink
             self.filename_entry.config(bg="#ffafaf")
-            print()
 
         else:
             # if there are no errors, generate text tile and then close dialogue
@@ -615,7 +610,6 @@ class Export:
                 question_list.append(correct_answer)  # puts into master list
                 question_num += 1
 
-            print(question_list)
 
             # Turns question list into a string
             question_list = ' '.join([str(item) for item in question_list])
